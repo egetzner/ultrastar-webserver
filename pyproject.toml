@@ -26,9 +26,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "-ra -q"
-env_files = [
-    ".env",
-    ".test.env"]
+env_files = [".test.env"]
 testpaths = [
     "test",
     "integration",
