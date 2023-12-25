@@ -21,3 +21,15 @@ index-db = "index:index_songs"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+# pyproject.toml
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+env_files = [
+    ".env",
+    ".test.env"]
+testpaths = [
+    "test",
+    "integration",
+]
