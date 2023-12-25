@@ -137,6 +137,7 @@ def api_mp3():
     mp3_path = request.args.get('mp3_path')
     print(mp3_path)
     #concat the song path to the song folder
+    #NOTE: if the mp3_path is ABSOLUTE, which it is under linux if it starts with /, the songfolder is ignored.
     mp3_path = os.path.join(SONGFOLDER, mp3_path)
     print(mp3_path)
     # prevent path traversal

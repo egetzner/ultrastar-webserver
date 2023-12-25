@@ -7,9 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 SONGFOLDER = os.getenv('SONGFOLDER')
+SONG_DB = os.getenv('SONG_DB')
 
 # Configure the SQLAlchemy engine
-engine = create_engine('sqlite:///F://webserver//songs.db')
+engine = create_engine(SONG_DB)
 
 # Create a session factory
 Session = sessionmaker(bind=engine)
@@ -43,7 +44,7 @@ def index_songs():
     count = 0
     edited = 0
     added = 0
-    for root, dirs, files in os.walk(SONGFOLDER):
+    for root, dirs, files in os.walk(SONGFOLDER, onerror=lambda x: print(x)):
         for file in files:
             if file.endswith('.mp3'):
                 batch -= 1
@@ -56,9 +57,9 @@ def index_songs():
                 for folder_file in os.listdir(root):
                     if folder_file.endswith('.txt'):
                         txt_path = os.path.join(root, folder_file)
-                        # open file
-                        with open(txt_path, 'r', encoding='ISO-8859-1') as txt_file:
-                            # read lines
+                        # open file # NOTE: some are ascii, some are utf-8 -> just really depends... 
+                        with open(txt_path, 'r', encoding='latin-1') as txt_file:
+                            # read lines # TODO: this is really inefficient
                             lines = txt_file.readlines()
                             # search for metadata (probably in the first 20 lines)
                             for line in lines[:20]:
@@ -70,7 +71,7 @@ def index_songs():
                                     language = line.replace('#LANGUAGE:', '').strip()
                                 elif line.startswith('#YEAR:'):
                                     year = line.replace('#YEAR:', '').strip()
-                        # checj if song is already in database
+                        # check if song is already in database
                         # get modify date of folder
                         # this is the date the song was added to the database
                         modify_date = os.path.getmtime(root)
