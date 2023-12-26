@@ -19,7 +19,7 @@ UltraStar Web Server is a web application that provides an interface for browsin
 
 ## Configuration
 
-1. Create a `.env` file in the project directory and add the following variables:
+Create a `.env` file in the project directory and add the following variables:
 
    ```
    QR_URL=http://your_local_ip_address:5000
@@ -28,9 +28,7 @@ UltraStar Web Server is a web application that provides an interface for browsin
    ULTRASTAR_DB=sqlite:///path_to_your_ultrastar_database_file
    ```
 
-   Replace `your_local_ip_address` with your computer's local IP address, `path_to_your_songs_directory` with the path to your UltraStar Deluxe songs folder, and `path_to_your_songs.db_file` and `path_to_your_ultrastar_database_file` with the paths to your desired SQLite database files.
-
-2. Set the `SONGFOLDER` variable in `index.py` to the path of your UltraStar Deluxe songs folder.
+Replace `your_local_ip_address` with your computer's local IP address, `path_to_your_songs_directory` with the path to your UltraStar Deluxe songs folder, and `path_to_your_songs.db_file` and `path_to_your_ultrastar_database_file` with the paths to your desired SQLite database files.
 
 ## Usage
 
