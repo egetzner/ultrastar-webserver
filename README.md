@@ -15,7 +15,7 @@ UltraStar Web Server is a web application that provides an interface for browsin
 1. Install [Poetry](https://python-poetry.org/docs/#installation) if you haven't already.
 2. Clone this repository: `git clone https://github.com/your_username/ultrastar-web-server.git`
 3. Navigate to the project directory: `cd ultrastar-web-server`
-4. Run `poetry install` to install all dependencies.
+4. Run `poetry install --no-root` to install all dependencies. (without installing the current project)
 
 ## Configuration
 
@@ -76,4 +76,6 @@ Pull requests are welcome! If you have any ideas for new features or improvement
 ## Tests and Code Coverage
 
 - using `pytest` and `coverage` packages to test the code
-- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests
+- run `poetry coverage run -m pytest && poetry coverage report | html`
+- OR:
+- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests (depends on pytest-cov)

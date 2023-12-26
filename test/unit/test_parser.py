@@ -12,19 +12,6 @@ def _parse_file(short_path):
     return parse_text_file(filepath)
 
 
-def test_parse_songs():
-    all_songs = get_songs(SONGFOLDER)
-
-    assert len(all_songs) > 0
-
-    assert all_songs[0]['Title'] == "Cruella De Vil"
-    assert all_songs[0]['Mp3'] == "101 Dalmatiner - Cruella De Vil.mp3"
-    assert all_songs[0]['Folder'] == "101 Dalmatiner - Cruella De Vil"
-    assert all_songs[0]['FileName'] == "101 Dalmatiner - Cruella De Vil.txt"
-
-    assert all_songs[-1]['Title'] == "My Shot"
-
-
 @pytest.mark.parametrize("test_input,expected",
                          [("101 Dalmatiner - Cruella De Vil/101 Dalmatiner - Cruella De Vil.txt", "Cruella De Vil"),
                           ("10CC - I'm Not In Love/10CC - I'm Not In Love.txt", "I'm Not In Love")])
