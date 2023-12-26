@@ -1,8 +1,7 @@
 from index import Song, index_songs, session
 
-
 def test_german_song():
-    index_songs()
+    #index_songs()
 
     result = session.query(Song).filter_by(title="Cruella De Vil").first()
 
@@ -13,7 +12,7 @@ def test_german_song():
 
 
 def test_english_song():
-    index_songs()
+    #index_songs()
 
     result = session.query(Song).filter_by(artist="10CC").first()
 

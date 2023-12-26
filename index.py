@@ -1,9 +1,11 @@
 import os
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
+from parser import parse_text_file
 
 load_dotenv()
 SONGFOLDER = os.getenv('SONGFOLDER')
@@ -37,6 +39,7 @@ class Song(Base):
 # Create a session
 session = Session()
 
+
 def index_songs():
     # Create db
     Base.metadata.create_all(engine)
@@ -57,20 +60,13 @@ def index_songs():
                 for folder_file in os.listdir(root):
                     if folder_file.endswith('.txt'):
                         txt_path = os.path.join(root, folder_file)
-                        # open file # NOTE: some are ascii, some are utf-8 -> just really depends... 
-                        with open(txt_path, 'r', encoding='latin-1') as txt_file:
-                            # read lines # TODO: this is really inefficient
-                            lines = txt_file.readlines()
-                            # search for metadata (probably in the first 20 lines)
-                            for line in lines[:20]:
-                                if line.startswith('#TITLE:'):
-                                    title = line.replace('#TITLE:', '').strip()
-                                elif line.startswith('#ARTIST:'):
-                                    artist = line.replace('#ARTIST:', '').strip()
-                                elif line.startswith('#LANGUAGE:'):
-                                    language = line.replace('#LANGUAGE:', '').strip()
-                                elif line.startswith('#YEAR:'):
-                                    year = line.replace('#YEAR:', '').strip()
+                        info = parse_text_file(txt_path)
+
+                        title = info['Title']
+                        artist = info['Artist']
+                        language = info['Language']
+                        year = info['Year']
+
                         # check if song is already in database
                         # get modify date of folder
                         # this is the date the song was added to the database
