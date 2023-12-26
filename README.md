@@ -74,3 +74,8 @@ Pull requests are welcome! If you have any ideas for new features or improvement
 
 - [ ] Create detailed documentation on installation, configuration, and usage
 - [X] Write a better and more extensive Readme (Done)
+
+## Tests and Code Coverage
+
+- using `pytest` and `coverage` packages to test the code
+- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests

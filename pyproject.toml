@@ -31,3 +31,8 @@ testpaths = [
     "test",
     "integration",
 ]
+
+[tool.coverage.report]
+omit = [
+    "test/*"
+    ]
