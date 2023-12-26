@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["pheelwell"]
 readme = "README.md"
-packages = [{include = "ultrastar_server"}]
+#packages = [{include = "ultrastar_server"}]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
@@ -21,3 +21,18 @@ index-db = "index:index_songs"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+# pyproject.toml
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+env_files = [".test.env"]
+testpaths = [
+    "test",
+    "integration",
+]
+
+[tool.coverage.report]
+omit = [
+    "test/*"
+    ]
