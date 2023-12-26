@@ -1,6 +1,6 @@
 import os
 import pytest
-from parser import parse_text_file
+from parser import parse_text_file, get_songs
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,6 +10,19 @@ SONGFOLDER = os.getenv('SONGFOLDER')
 def _parse_file(short_path):
     filepath = os.path.join(SONGFOLDER, short_path)
     return parse_text_file(filepath)
+
+
+def test_parse_songs():
+    all_songs = get_songs(SONGFOLDER)
+
+    assert len(all_songs) > 0
+
+    assert all_songs[0]['Title'] == "Cruella De Vil"
+    assert all_songs[0]['Mp3'] == "101 Dalmatiner - Cruella De Vil.mp3"
+    assert all_songs[0]['Folder'] == "101 Dalmatiner - Cruella De Vil"
+    assert all_songs[0]['FileName'] == "101 Dalmatiner - Cruella De Vil.txt"
+
+    assert all_songs[-1]['Title'] == "My Shot"
 
 
 @pytest.mark.parametrize("test_input,expected",

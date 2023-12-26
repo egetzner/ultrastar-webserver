@@ -1,5 +1,21 @@
 import os
 import re
+import glob
+
+
+def get_songs(song_path):
+    os.chdir(song_path)
+    files = glob.glob('**/*.txt')
+    all_songs = list()
+    for file_path in files:
+        text_file = os.path.join(song_path, file_path)
+        data = parse_text_file(text_file)
+        if len(data) > 0:
+            data['Folder'] = os.path.dirname(file_path)
+            data['FileName'] = os.path.basename(file_path)
+            all_songs.append(data)
+
+    return all_songs
 
 
 def parse_content(lines):
@@ -42,7 +58,6 @@ def parse_text_file(text_file):
         try:
             with open(text_file, "r", encoding=encoding) as file:
                 lines = file.readlines()
-                print(f"is readable for encoding: {encoding}")
                 return parse_content(lines)
         except Exception as ex:
             print(ex)
