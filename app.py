@@ -6,7 +6,7 @@ from sqlalchemy.orm import class_mapper
 from dotenv import load_dotenv, find_dotenv
 
 # make sure to work inside the app context
-find_dotenv(raise_error_if_not_found=True)
+find_dotenv(raise_error_if_not_found=False)
 load_dotenv()
 
 QR_URL = os.getenv('QR_URL')

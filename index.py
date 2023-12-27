@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 from parser import get_filenames
 from repository import SongIndexer, Base
 
-find_dotenv(raise_error_if_not_found=True)
+find_dotenv(raise_error_if_not_found=False)
 load_dotenv()
 
 
