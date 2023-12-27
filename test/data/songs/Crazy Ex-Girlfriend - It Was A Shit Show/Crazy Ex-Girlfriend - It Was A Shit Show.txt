@@ -1,0 +1,318 @@
+#ARTIST:Crazy Ex-Girlfriend
+#TITLE:It Was A Shit Show
+#MP3:Crazy Ex-Girlfriend - It Was A Shit Show.mp3
+#CREATOR:Relisch
+#COVER:Crazy Ex-Girlfriend - It Was A Shit Show [CO].jpg
+#BACKGROUND:Crazy Ex-Girlfriend - It Was A Shit Show [BG].jpg
+#GENRE:Soundtrack
+#LANGUAGE:English
+#BPM:300
+#GAP:200
+#VIDEO:It Was a Shit Show (Explicit) - feat. Santino Fontana - Craz.mkv
+: 0 4 -3 I
+: 7 3 9  love
+: 15 7 11  you,
+: 29 5 6  yes
+- 44
+: 59 4 -3 And
+: 67 6 9  I’ll
+: 78 3 11  con
+: 85 4 6 fess
+- 99
+: 116 4 6 The
+: 124 3 9  thought
+: 128 3 11  of
+: 138 10 12  stay
+: 149 9 11 ing
+: 162 4 9  is
+: 173 5 9  so
+: 184 3 7  en
+: 191 4 11 ti
+: 199 7 9 cing
+- 216
+: 226 5 -1 And
+: 233 4 2  when
+: 240 7 9  you
+: 253 8 6  speak
+- 271
+: 282 5 -1 My
+: 289 6 2  knees
+: 303 3 9  get
+: 310 7 6  weak
+- 327
+: 340 6 -1 I
+: 350 5 2  can’t
+: 358 4 9  be
+: 364 8 6 lieve
+: 387 4 6  what
+: 395 10 9  I’m
+: 410 4 11  sa
+: 416 3 9 cri
+: 422 3 11 fi
+: 429 7 6 cing
+- 446
+: 454 3 -1 But
+: 460 3 6  let’s
+: 467 3 4  get
+: 474 6 7  real
+- 490
+: 508 5 -1 We
+: 516 8 6  know
+: 526 4 4  the
+: 535 8 7  deal
+- 553
+: 580 5 7 So
+: 588 12 6  dar
+: 602 8 9 ling
+* 621 6 13  let’s
+* 633 7 14  not
+* 646 4 13  tip
+* 654 8 11 toe
+- 672
+: 680 2 -1 This
+: 688 5 6  thing
+: 694 5 7  we
+: 701 10 4  had
+- 721
+: 733 3 -1 Was
+: 742 4 9  not
+: 752 2 7  just
+: 760 4 6  bad
+: 765 8 4 ~
+- 782
+: 786 2 6 It
+: 794 6 1  was
+: 806 3 4  a
+* 815 2 4  shit
+* 823 13 2  show
+- 876
+: 932 7 -3 We
+: 943 5 9  can’t
+: 951 6 11  un
+: 960 7 6 do,
+: 990 6 -3  can’t
+: 1000 4 9  make
+: 1008 4 11  a
+: 1015 9 6 mends
+- 1034
+: 1043 3 6 Dys
+: 1052 3 9 func
+: 1058 5 11 tion
+: 1065 10 12  is
+: 1080 10 11  our
+: 1101 5 9  lin
+: 1108 5 7 gua
+: 1119 6 11  fran
+: 1129 11 9 ca
+- 1150
+: 1159 3 -1 We
+: 1166 4 2  can’t
+: 1174 6 9  un
+: 1186 8 6 screw
+: 1216 3 -1  each
+: 1224 3 2  oth
+: 1229 3 9 ers
+: 1239 10 6  friends
+- 1259
+: 1271 7 -1 We’re
+: 1280 3 2  Jer
+: 1285 3 9 ry
+: 1293 3 6  Sprin
+: 1297 4 6 ger,
+: 1326 4 9  not
+: 1336 3 11  Ca
+: 1342 2 9 sa
+: 1346 5 11 blan
+: 1354 8 6 ca
+- 1372
+: 1385 5 -1 There’s
+: 1395 3 6  hard
+: 1401 2 4  to
+: 1407 6 7  get,
+: 1437 5 -1  then
+: 1446 9 6  there’s
+: 1462 2 4  ne
+: 1469 5 7 glect
+- 1484
+: 1498 6 7 To
+: 1508 4 7  say
+: 1513 2 4  it’s
+: 1519 6 6  fate,
+: 1538 4 6  you’d
+: 1545 4 10  have
+: 1553 7 13  to
+: 1563 2 13  be
+: 1567 3 14  a
+: 1575 3 13  bit
+: 1583 8 11  slow
+- 1601
+: 1609 3 -1 Not
+: 1616 4 6  to
+: 1622 4 7  be
+: 1630 8 4  crass
+- 1648
+: 1663 2 -1 But
+: 1671 3 9  this
+: 1679 3 7  sucked
+: 1687 4 6  ass
+: 1692 5 4 ~
+- 1707
+: 1715 3 6 This
+: 1724 5 1  was
+: 1735 3 4  a
+: 1745 3 4  shit
+: 1753 9 2  show
+- 1772
+* 1793 5 14 Cher
+: 1800 6 14 no
+: 1808 8 14 byl
+: 1819 3 10  next
+: 1826 2 12  to
+: 1831 3 14  us
+: 1841 2 14  looks
+: 1847 2 12  like
+: 1851 2 10  a
+: 1856 5 10  camp
+: 1865 10 9 fire
+- 1885
+: 1912 3 14 Hur
+: 1915 2 14 ri
+: 1919 10 14 cane
+: 1932 2 14  Ka
+: 1937 3 14 tri
+: 1940 6 14 na
+: 1954 3 14  was
+: 1962 3 12  just
+: 1969 3 10  bad
+: 1975 3 10  wea
+: 1980 17 9 ther
+- 2006
+: 2010 4 9 We
+: 2017 5 14  have
+: 2025 3 14  che
+: 2028 2 14 mis
+: 2034 8 14 try,
+: 2044 4 14  of
+: 2052 6 14  course
+- 2064
+: 2067 2 14 but
+: 2071 3 12  that’s
+: 2077 2 10  a
+: 2081 3 9  for
+: 2085 3 9 mu
+: 2088 3 9 la
+: 2095 5 9  for
+: 2101 2 14  di
+: 2106 8 14 vorce
+- 2124
+: 2131 3 14 A
+* 2138 4 14  play
+* 2143 2 11  a
+* 2147 3 13 bout
+: 2153 3 14  pie
+: 2158 2 11 ces
+: 2162 2 13  of
+: 2167 3 14  fec
+: 2173 5 11 es
+- 2184
+* 2187 3 14 is
+* 2194 6 18  what
+: 2203 5 18  we
+: 2210 6 18  are
+: 2219 6 19  to
+: 2228 7 18 ge
+: 2236 2 19 ~
+: 2239 1 18 ~
+: 2243 44 16 ther
+- 2307
+: 2327 5 -3 Oh,
+: 2334 2 9  what
+: 2341 3 11  the
+: 2347 7 6  hell,
+: 2383 2 -3  let’s
+: 2391 2 9  get
+: 2394 2 9  a
+: 2399 3 11  ho
+: 2405 8 6 tel
+- 2423
+: 2439 4 6 'Cause
+: 2448 3 9  life
+: 2453 3 11  is
+: 2460 6 12  short
+: 2470 3 12  and
+: 2475 5 12  we’re
+: 2481 5 11  not
+: 2494 2 9  get
+: 2497 3 7 ting
+: 2505 2 9  a
+: 2508 6 7 ny
+: 2516 4 11  youn
+: 2522 8 9 ger
+- 2540
+: 2554 3 -1 But
+: 2560 3 2  af
+: 2566 2 9 ter
+: 2573 4 6  sex,
+: 2608 3 -1  what
+: 2614 3 2  hap
+: 2620 5 9 pens
+: 2629 5 6  next?
+- 2644
+: 2669 2 -1 I
+: 2673 5 2  mean
+: 2682 1 9  in
+: 2684 1 9  the
+: 2687 3 6  long
+: 2691 3 6  run,
+: 2711 2 9  not
+: 2714 2 9  just
+: 2719 1 9  fa
+: 2723 7 11 tigue
+: 2736 4 9  and
+: 2743 3 11  hun
+: 2748 7 6 ger
+- 2765
+: 2777 6 -1 And
+: 2785 4 6  when
+: 2791 4 4  you
+: 2800 9 7  say
+: 2835 3 -1  that
+: 2842 5 6  I
+: 2850 2 4  should
+: 2859 14 7  stay
+- 2883
+: 2896 3 6 That’s
+: 2904 2 4  ex
+: 2911 7 6 act
+: 2923 10 9 ly
+* 2945 3 13  when
+* 2949 7 13  I
+* 2959 4 14  should
+: 2969 5 13  split
+- 2984
+: 2988 7 11 Though,
+: 3001 5 -1  I
+: 3008 5 6  won’t
+: 3017 3 7  for
+: 3025 6 4 get,
+: 3059 6 -1  I
+: 3068 9 9  won’t
+: 3081 3 7  re
+: 3089 4 6 gret
+: 3094 16 4 ~
+- 3130
+: 3151 4 13 This
+: 3162 8 16  beau
+: 3171 4 14 ti
+: 3178 6 13 ful,
+: 3187 5 16  heart
+: 3196 4 14  stop
+: 3204 5 13 ping
+- 3211
+: 3213 5 16 Breath
+: 3222 5 14 tak
+: 3230 6 13 ing,
+* 3239 8 18  life-
+* 3251 7 13 chang
+* 3261 9 16 ing
+E

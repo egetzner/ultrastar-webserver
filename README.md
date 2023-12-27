@@ -15,11 +15,11 @@ UltraStar Web Server is a web application that provides an interface for browsin
 1. Install [Poetry](https://python-poetry.org/docs/#installation) if you haven't already.
 2. Clone this repository: `git clone https://github.com/your_username/ultrastar-web-server.git`
 3. Navigate to the project directory: `cd ultrastar-web-server`
-4. Run `poetry install` to install all dependencies.
+4. Run `poetry install --no-root` to install all dependencies. (without installing the current project)
 
 ## Configuration
 
-1. Create a `.env` file in the project directory and add the following variables:
+Create a `.env` file in the project directory and add the following variables:
 
    ```
    QR_URL=http://your_local_ip_address:5000
@@ -28,9 +28,7 @@ UltraStar Web Server is a web application that provides an interface for browsin
    ULTRASTAR_DB=sqlite:///path_to_your_ultrastar_database_file
    ```
 
-   Replace `your_local_ip_address` with your computer's local IP address, `path_to_your_songs_directory` with the path to your UltraStar Deluxe songs folder, and `path_to_your_songs.db_file` and `path_to_your_ultrastar_database_file` with the paths to your desired SQLite database files.
-
-2. Set the `SONGFOLDER` variable in `index.py` to the path of your UltraStar Deluxe songs folder.
+Replace `your_local_ip_address` with your computer's local IP address, `path_to_your_songs_directory` with the path to your UltraStar Deluxe songs folder, and `path_to_your_songs.db_file` and `path_to_your_ultrastar_database_file` with the paths to your desired SQLite database files.
 
 ## Usage
 
@@ -78,4 +76,6 @@ Pull requests are welcome! If you have any ideas for new features or improvement
 ## Tests and Code Coverage
 
 - using `pytest` and `coverage` packages to test the code
-- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests
+- run `poetry coverage run -m pytest && poetry coverage report | html`
+- OR:
+- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests (depends on pytest-cov)

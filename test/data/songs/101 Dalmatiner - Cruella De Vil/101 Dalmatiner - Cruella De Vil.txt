@@ -1,0 +1,173 @@
+#TITLE:Cruella De Vil
+#ARTIST:101 Dalmatiner
+#LANGUAGE:German
+#EDITION:SingStar best of Disney
+#YEAR:1961
+#MP3:101 Dalmatiner - Cruella De Vil.mp3
+#COVER:101 Dalmatiner - Cruella De Vil.jpg
+#VIDEO:101 Dalmatiner - Cruella De Vil.avi
+#VIDEOGAP:0
+#BPM:340
+#GAP:3794,12
+: 0 2 60 Cru
+: 5 5 60 el
+: 13 2 63 la
+: 17 6 65  De
+: 25 10 66  Vil
+- 44 
+: 47 3 65 Cru
+: 51 7 65 el
+: 60 2 68 la
+: 64 5 70  De
+: 72 9 71  Vil
+- 92 
+: 96 1 60 Durch
+: 100 6 60 bohrt
+: 108 2 63  dich
+: 112 6 65  ihr
+: 120 4 66  Blick
+- 134 
+* 144 2 65 Dann
+: 149 7 65  wirst
+: 157 2 68  du
+: 161 7 70  ganz
+: 169 15 71  still
+- 193 
+: 196 3 71 Mit
+: 200 9 72  ihr
+: 211 2 68 en
+: 216 6 70  Spin
+: 223 1 68 nen
+: 228 6 72 fing
+: 238 2 68 ern
+- 242 
+: 244 2 70 Wenn
+: 252 4 68  sie
+: 257 16 72  will
+- 283 
+: 292 3 65 Cru
+: 296 7 72 el
+: 304 21 71 la
+- 331 
+: 333 7 65 Cru
+: 341 7 71 el
+: 349 15 70 la
+- 374 
+: 384 8 68 Um
+: 393 5 72 schlingt
+: 403 2 68  sie
+: 407 4 70  dich
+- 413 
+: 415 4 68 Und
+: 421 3 72  beißt
+: 430 2 68  dich
+: 435 3 70  mit
+: 442 5 68  Ge
+* 450 25 72 brüll
+- 484 
+: 487 2 65 Cru
+: 492 5 72 el
+: 500 9 71 la,
+: 513 2 65  Cru
+: 518 5 71 el
+: 525 7 70 la
+: 538 2 68  De
+: 545 14 68  Vil
+- 569 
+: 587 4 65 Cru
+: 593 6 72 el
+: 602 3 73 la
+: 607 3 70  hat
+- 612 
+: 614 4 72 Das
+: 619 4 68  Zeug
+* 626 4 70  zu
+: 631 5 67  ei
+: 637 6 68 ner
+: 644 2 65  He
+: 650 12 65 xe
+- 672 
+: 689 4 65 Wenn
+: 694 5 72  sie
+: 702 3 73  um
+: 707 6 70  dei
+: 714 4 72 ne
+: 719 3 68  Gunst
+- 726 
+: 728 2 70 Ver
+: 732 5 67 bis
+: 738 2 68 sen
+: 743 18 65  buhlt
+- 771 
+: 787 3 68 Schon
+: 793 4 70  manch
+: 799 2 70 er
+: 804 3 70  ist
+: 810 3 68  er
+: 814 9 70 wacht
+- 829 
+: 832 4 68 Wenn
+* 838 7 70  sie
+: 846 2 70  um
+: 850 2 70  Mit
+: 854 2 68 ter
+: 858 11 70 nacht
+- 877 
+: 880 4 70 Durch
+: 886 5 71  Fen
+: 894 3 71 ster
+: 899 6 70  und
+: 906 2 68  durch
+- 911 
+: 913 6 71 Mau
+: 922 3 71 er
+: 927 3 70 ritz
+: 934 4 68 en
+: 942 14 70  schmuhlt
+- 966 
+: 987 2 60 Der
+* 993 7 60  wil
+: 1001 4 63 de
+: 1006 5 65  Vam
+: 1012 13 66 pir
+- 1033 
+: 1036 4 66 Der
+: 1041 7 65  al
+: 1050 3 68 le
+: 1054 5 70  er
+: 1062 9 71 schreckt
+- 1081 
+: 1088 2 60 Man
+: 1093 5 60  soll
+: 1100 2 63 te
+: 1105 4 65  ihn
+: 1112 5 66  ein
+: 1120 4 66 sperr'n
+- 1130 
+: 1132 6 66 Dann
+: 1139 8 65  bleibt
+: 1149 2 68  er
+: 1153 4 70  ver
+: 1160 4 71 steckt
+- 1174 
+: 1181 4 68 Man
+: 1189 5 72  soll
+: 1199 3 68 te
+: 1204 4 70  sie
+- 1210 
+: 1212 3 68 Be
+: 1217 7 72 gra
+: 1225 4 68 ben
+: 1230 3 70  un
+: 1239 4 68 ter
+: 1244 21 72  Müll
+- 1275 
+: 1282 7 65 Cru
+: 1290 6 72 el
+* 1297 7 71 la,
+: 1310 5 65  Cru
+: 1316 7 71 el
+: 1324 8 70 la
+: 1335 2 63  De
+: 1340 24 68  Vil
+E

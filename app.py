@@ -1,15 +1,13 @@
 import os
 from flask import Flask, render_template, request, send_file
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.automap import automap_base
+from sqlalchemy import or_
 from sqlalchemy.orm import class_mapper
-from dotenv import load_dotenv
-import socket
+from dotenv import load_dotenv, find_dotenv
 
 # make sure to work inside the app context
+find_dotenv(raise_error_if_not_found=True)
 load_dotenv()
-
 
 QR_URL = os.getenv('QR_URL')
 SONGFOLDER = os.getenv('SONGFOLDER')
@@ -17,12 +15,30 @@ SONG_DB = os.getenv('SONG_DB')
 ULTRASTAR_DB = os.getenv('ULTRASTAR_DB')
 
 
+def _create_sqlite_string(connection_string):
+    path_with_args = connection_string.removeprefix("sqlite:///")
+    path_and_args = path_with_args.split("?")
+    path = path_and_args[0]
+
+    args = ''
+    if len(path_and_args) > 1:
+        args = '?' + '?'.join(path_and_args[1:])
+
+    if os.path.isabs(path) or path == ':memory:':
+        abs_path = path
+    else:
+        abs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), path))
+
+    return 'sqlite:///' + abs_path + args
+
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = SONG_DB
+app.config['SQLALCHEMY_DATABASE_URI'] = _create_sqlite_string(SONG_DB)
 app.config['SQLALCHEMY_BINDS'] = {
-    'us_db': ULTRASTAR_DB
+    'us_db': _create_sqlite_string(ULTRASTAR_DB)
 }
 db = SQLAlchemy(app)
+
 
 # Create a class for the songs table
 class Song(db.Model):
@@ -31,6 +47,9 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     artist = db.Column(db.String(255))
+    album = db.Column(db.String(255))
+    genre = db.Column(db.String(255))
+    edition = db.Column(db.String(255))
     language = db.Column(db.String(255))
     year = db.Column(db.Integer)
     mp3_path = db.Column(db.String(255), unique=True)
@@ -42,7 +61,7 @@ class Song(db.Model):
 class USSong(db.Model):
     __bind_key__ = 'us_db'
     __tablename__ = 'us_songs'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {'extend_existing': False}
     id = db.Column(db.Integer, primary_key=True)
     artist = db.Column(db.String(255))
     title = db.Column(db.String(255))
@@ -59,6 +78,7 @@ def model_to_dict(model):
 
 # Update the handle_song_request function
 def handle_song_request(request):
+    search_filter = request.args.get('filter')
     artist_filter = request.args.get('artist_filter')
     song_filter = request.args.get('song_filter')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
@@ -66,7 +86,15 @@ def handle_song_request(request):
     offset = request.args.get('offset', 0)  # Default offset to 0
 
     query = Song.query
-    
+
+    if search_filter:
+        query = query.filter(or_(
+            Song.artist.like(f'%{search_filter}%'),
+            Song.title.like(f'%{search_filter}%'),
+            Song.album.like(f'%{search_filter}%'),
+            Song.genre.like(f'%{search_filter}%'),
+            Song.edition.like(f'%{search_filter}%')
+        ))
 
     if artist_filter:
         query = query.filter(Song.artist.like(f"%{artist_filter}%"))
@@ -75,16 +103,23 @@ def handle_song_request(request):
         query = query.filter(Song.title.like(f"%{song_filter}%"))
 
     if sort_by == 'artist':
-        query = query.order_by(Song.artist)
+        query = query.order_by(Song.artist, Song.title)
     elif sort_by == 'title':
-        query = query.order_by(Song.title)
+        query = query.order_by(Song.title, Song.artist)
     elif sort_by == 'year':
-        query = query.order_by(Song.year)
-    
-    # if querrying for times played, dont limit the results
+        query = query.order_by(Song.year.desc(), Song.artist, Song.title)
+    elif sort_by == 'language':
+        query = query.order_by(Song.language.desc(), Song.artist, Song.title)
+    elif sort_by == 'genre':
+        query = query.order_by(Song.genre, Song.artist, Song.title)
+    elif sort_by == 'edition':
+        query = query.order_by(Song.edition, Song.artist, Song.title)
+    elif sort_by == 'album':
+        query = query.order_by(Song.album, Song.artist, Song.title)
+
+    # if querying for times played, don't limit the results
     if sort_by != 'times_played':
         query = query.limit(limit).offset(offset)
-    
 
     songs = query.all()
 
@@ -94,60 +129,60 @@ def handle_song_request(request):
     us_songs = [model_to_dict(song) for song in us_songs]
     songs = [model_to_dict(song) for song in songs]
 
+    # we have to iterate through all songs because we need to add the times_played field.
     for song in songs:
         match_found = False  # Flag variable to track if a match is found
         for us_song in us_songs:
             if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
-                print(f"match found for {song['artist']} - {song['title']}")
                 song["times_played"] = us_song["TimesPlayed"]
                 match_found = True
                 break  # Break out of the inner loop
         if not match_found:
             song["times_played"] = 0
-    
+
     if sort_by == 'times_played':
         # remove songs with 0 times played
         songs = [song for song in songs if song['times_played'] > 0]
-        songs = sorted(songs, key=lambda k: k['times_played'], reverse=True)
+        songs = sorted(songs, key=lambda k: (-k['times_played'], k['artist'], k['title']))
+
+        if offset is not None or limit is not None:
+            return songs[int(offset):min(int(offset)+int(limit), len(songs))]
 
     return songs
-
 
 
 @app.route('/')
 def index():
     songs = handle_song_request(request)
-    artist_filter = request.args.get('artist_filter',default='')
-    song_filter = request.args.get('song_filter',default='')
+    filter = request.args.get('filter', default='')
+    artist_filter = request.args.get('artist_filter', default='')
+    song_filter = request.args.get('song_filter', default='')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
     # get local ip
-    return render_template('index.html', songs=songs, artist_filter=artist_filter, song_filter=song_filter, sort_by=sort_by, local_ip=QR_URL)
+    return render_template('index.html', songs=songs, filter=filter, artist_filter=artist_filter, song_filter=song_filter,
+                           sort_by=sort_by, local_ip=QR_URL)
+
 
 @app.route('/api/songs')
 def api_songs():
     songs = handle_song_request(request)
-    
-    return {'songs': songs}
 
+    return {'songs': songs}
 
 
 @app.route('/api/mp3')
 def api_mp3():
-    #this holds the relative path to the mp3 file
+    # this holds the relative path to the mp3 file
     mp3_path = request.args.get('mp3_path')
     print(mp3_path)
-    #concat the song path to the song folder
-    #NOTE: if the mp3_path is ABSOLUTE, which it is under linux if it starts with /, the songfolder is ignored.
+    # concat the song path to the song folder
+    # NOTE: if the mp3_path is ABSOLUTE, which it is under linux if it starts with /, the songfolder is ignored.
     mp3_path = os.path.join(SONGFOLDER, mp3_path)
     print(mp3_path)
     # prevent path traversal
-    #return the song from the os
+    # return the song from the os
     return send_file(mp3_path, mimetype='audio/mp3')
 
-# print test on startup of the server
-@app.before_first_request
-def before_first_request():
-    print("Flask app is starting up...")
 
 if __name__ == '__main__':
     print('start')

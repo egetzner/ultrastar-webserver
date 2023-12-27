@@ -3,19 +3,15 @@ import re
 import glob
 
 
-def get_songs(song_path):
-    os.chdir(song_path)
-    files = glob.glob('**/*.txt')
-    all_songs = list()
-    for file_path in files:
-        text_file = os.path.join(song_path, file_path)
-        data = parse_text_file(text_file)
-        if len(data) > 0:
-            data['Folder'] = os.path.dirname(file_path)
-            data['FileName'] = os.path.basename(file_path)
-            all_songs.append(data)
+def get_filenames(song_path, extension='txt'):
+    if not os.path.exists(song_path):
+        raise Exception(f"not a valid path: '{song_path}'")
 
-    return all_songs
+    if os.path.isdir(song_path):
+        directory = song_path
+    else:
+        directory = os.path.dirname(song_path)
+    return glob.glob(directory + '/**/*.' + extension)
 
 
 def parse_content(lines):
@@ -51,7 +47,28 @@ def parse_content(lines):
     return data
 
 
-def parse_text_file(text_file):
+def parse_text_file(text_file, song_path):
+    data = _parse_file_with_unknown_encoding(text_file)
+    if data is not None and len(data) > 0:
+
+        folder = os.path.dirname(text_file)
+        mp3_path = os.path.join(folder, data['Mp3'])
+
+        if not os.path.exists(mp3_path):
+            print(f"Warning: MP3 Not found: {mp3_path}")
+            return None
+
+        data['FileName'] = os.path.basename(text_file)
+        data['Folder'] = os.path.relpath(folder, start=song_path)
+        data['Mp3Path'] = os.path.relpath(mp3_path, start=song_path)
+        data['ModifyDate'] = os.path.getmtime(folder)
+
+        return data
+
+    return None
+
+
+def _parse_file_with_unknown_encoding(text_file):
     encodings = ["utf-8", "iso-8859-1", "ascii"]
 
     for encoding in encodings:
