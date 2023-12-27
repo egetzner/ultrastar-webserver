@@ -12,10 +12,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout
+      uses: actions/checkout@v3
 
     - name: Set up Poetry
-      uses: actions/setup-python
+      uses: actions/setup-python@v2
       with:
         python-version: 3.9
 
@@ -31,7 +31,7 @@ jobs:
         poetry run coverage html -d coverage_html
 
     - name: Upload Code Coverage Results
-      uses: actions/upload-artifact
+      uses: actions/upload-artifact@v2
       with:
         name: coverage
         path: coverage_html/
@@ -41,10 +41,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout
+      uses: actions/checkout@v3
 
     - name: Set up Poetry
-      uses: actions/setup-python
+      uses: actions/setup-python@v2
       with:
         python-version: 3.9
 
