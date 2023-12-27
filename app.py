@@ -39,7 +39,7 @@ class Song(db.Model):
 class USSong(db.Model):
     __bind_key__ = 'us_db'
     __tablename__ = 'us_songs'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {'extend_existing': False}
     id = db.Column(db.Integer, primary_key=True)
     artist = db.Column(db.String(255))
     title = db.Column(db.String(255))
@@ -77,7 +77,7 @@ def handle_song_request(request):
     elif sort_by == 'year':
         query = query.order_by(Song.year)
 
-    # if querrying for times played, dont limit the results
+    # if querying for times played, don't limit the results
     if sort_by != 'times_played':
         query = query.limit(limit).offset(offset)
 
