@@ -3,3 +3,6 @@ instance
 __pycache__
 songs.db
 .idea
+.env
+.coverage
+coverage*

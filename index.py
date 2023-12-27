@@ -4,10 +4,12 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from parser import get_songs
 
+find_dotenv(raise_error_if_not_found=True)
 load_dotenv()
+
 SONGFOLDER = os.getenv('SONGFOLDER')
 SONG_DB = os.getenv('SONG_DB')
 

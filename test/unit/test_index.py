@@ -1,5 +1,7 @@
 from index import Song, session
 
+# NOTE: this will use the .env file, instead of the setup .test.env file, because it imports from index directly.
+
 
 def test_german_song():
     result = session.query(Song).filter_by(title="Cruella De Vil").first()
