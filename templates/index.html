@@ -136,10 +136,10 @@ $(document).ready(function() {
                         // Create and append table cells for each song property
                         $('<td></td>').text(song.artist).appendTo(row);
                         $('<td></td>').text(song.title).appendTo(row);
-                        $('<td></td>').html('<button class="preview bg-blue-500 text-white px-4 py-2 rounded-md" mp3_path="' + song.mp3_path + '">Preview</button>').appendTo(row);
                         $('<td></td>').text(song.year).appendTo(row);
                         $('<td></td>').text(song.language).appendTo(row);
                         $('<td></td>').text(song.times_played).appendTo(row);
+                        $('<td></td>').html('<button class="preview bg-blue-500 text-white px-4 py-2 rounded-md" mp3_path="' + song.mp3_path + '">🔊</button>').appendTo(row);
 
                         row.appendTo('tbody');
                     }
