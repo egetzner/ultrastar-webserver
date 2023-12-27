@@ -191,11 +191,11 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
 
 
 @pytest.mark.parametrize("sort_by,expected",
-                         [('title',['Africa', 'Basket Case', 'Tribute']),
-                          ('artist',['Basket Case', 'Tribute', 'Africa']),
-                          ('year',['Tribute', 'Basket Case', 'Africa']),
-                          ('language',['Tribute', 'Basket Case', 'Africa']),
-                          ('times_played',['Basket Case', 'Tribute', 'Africa'])])
+                         [('title', ['Basket Case', 'Hello', 'Tribute']),
+                          ('artist', ['Hello', 'Basket Case', 'Tribute']),
+                          ('year', ['Hello', 'Tribute', 'Basket Case']),
+                          ('language', ['Tribute', 'Hello', 'Basket Case']),
+                          ('times_played', ['Basket Case', 'Tribute'])])
 def test_handle_song_request_sort(client, sort_by, expected):
     # Add necessary test data to the database
     with app.app_context():
@@ -219,11 +219,14 @@ def test_handle_song_request_sort(client, sort_by, expected):
         )
 
         third_song = Song(
-            title='Africa',
-            artist='Toto',
+            title='Hello',
+            artist='Adele',
+            album='Rumours',
+            genre='Pop',
+            edition='SingStar',
             language='English',
-            year=1988,
-            mp3_path='africa.mp3',
+            year=2015,
+            mp3_path='adele.mp3',
             modify_date=123456789,
             folder_path='/test/folder'
         )
