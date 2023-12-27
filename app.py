@@ -89,11 +89,13 @@ def handle_song_request(request):
         query = query.filter(Song.title.like(f"%{song_filter}%"))
 
     if sort_by == 'artist':
-        query = query.order_by(Song.artist)
+        query = query.order_by(Song.artist, Song.title)
     elif sort_by == 'title':
-        query = query.order_by(Song.title)
+        query = query.order_by(Song.title, Song.artist)
     elif sort_by == 'year':
-        query = query.order_by(Song.year)
+        query = query.order_by(Song.year.desc(), Song.artist, Song.title)
+    elif sort_by == 'language':
+        query = query.order_by(Song.language.desc(), Song.artist, Song.title)
 
     # if querying for times played, don't limit the results
     if sort_by != 'times_played':
@@ -107,21 +109,36 @@ def handle_song_request(request):
     us_songs = [model_to_dict(song) for song in us_songs]
     songs = [model_to_dict(song) for song in songs]
 
-    for song in songs:
-        match_found = False  # Flag variable to track if a match is found
+    if len(songs) > len(us_songs) or sort_by != 'times_played':
+        for song in songs:
+            match_found = False  # Flag variable to track if a match is found
+            for us_song in us_songs:
+                if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
+                    #print(f"match found for {song['artist']} - {song['title']}")
+                    song["times_played"] = us_song["TimesPlayed"]
+                    match_found = True
+                    break  # Break out of the inner loop
+            if not match_found:
+                song["times_played"] = 0
+    else:
         for us_song in us_songs:
-            if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
-                print(f"match found for {song['artist']} - {song['title']}")
-                song["times_played"] = us_song["TimesPlayed"]
-                match_found = True
-                break  # Break out of the inner loop
-        if not match_found:
-            song["times_played"] = 0
+            match_found = False  # Flag variable to track if a match is found
+            for song in songs:
+                if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
+                    print(f"match found for {song['artist']} - {song['title']}")
+                    song["times_played"] = us_song["TimesPlayed"]
+                    match_found = True
+                    break  # Break out of the inner loop
+            if not match_found:
+                song["times_played"] = 0
 
     if sort_by == 'times_played':
         # remove songs with 0 times played
         songs = [song for song in songs if song['times_played'] > 0]
-        songs = sorted(songs, key=lambda k: k['times_played'], reverse=True)
+        songs = sorted(songs, key=lambda k: (-k['times_played'],k['artist']))
+
+        if offset is not None or limit is not None:
+            return songs[int(offset):min(int(offset)+int(limit), len(songs))]
 
     return songs
 

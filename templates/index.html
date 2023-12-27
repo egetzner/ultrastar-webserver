@@ -30,7 +30,7 @@
                         class="mt-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
                         <option value="artist" {% if sort_by=='artist' %}selected{% endif %}>Artist</option>
                         <option value="title" {% if sort_by=='title' %}selected{% endif %}>Title</option>
-                        <option value="genre" {% if sort_by=='genre' %}selected{% endif %}>Genre</option>
+                        <option value="language" {% if sort_by=='language' %}selected{% endif %}>Language</option>
                         <option value="year" {% if sort_by=='year' %}selected{% endif %}>Year</option>
                         <option value="times_played" {% if sort_by=='times_played' %}selected{% endif %}>Times
                             Played</option>
@@ -52,6 +52,7 @@
                     <th class="px-4 py-2">TITLE</th>
                     <th class="px-4 py-2">MP3</th>
                     <th class="px-4 py-2">YEAR</th>
+                    <th class="px-4 py-2">LANGUAGE</th>
                     <th class="px-4 py-2">TIMES PLAYED</th>
                 </tr>
             </thead>
@@ -65,6 +66,7 @@
                             mp3_path="{{ song.mp3_path }}">Preview</button>
                     </td>
                     <td class="px-4 py-2">{{ song.year }}</td>
+                    <td class="px-4 py-2">{{ song.language }}</td>
                     <td class="px-4 py-2">{{ song.times_played }}</td>
                     
                 </tr>
@@ -111,6 +113,7 @@ $(document).ready(function() {
                         $('<td></td>').text(song.title).appendTo(row);
                         $('<td></td>').html('<button class="preview bg-blue-500 text-white px-4 py-2 rounded-md" mp3_path="' + song.mp3_path + '">Preview</button>').appendTo(row);
                         $('<td></td>').text(song.year).appendTo(row);
+                        $('<td></td>').text(song.language).appendTo(row);
                         $('<td></td>').text(song.times_played).appendTo(row);
 
                         row.appendTo('tbody');
