@@ -82,6 +82,53 @@ def test_handle_song_request(client):
     assert songs[0]['times_played'] == 1
 
 
+@pytest.mark.parametrize("filter,expected",
+                         [('Green', ['Basket Case']),
+                          ('Basket', ['Basket Case'])])
+def test_handle_song_request_search_filter(client, filter, expected):
+    # Add necessary test data to the database
+    with app.app_context():
+        test_song = Song(
+            title='Basket Case',
+            artist='Green Day',
+            language='English',
+            year=2022,
+            mp3_path='green_day_basket_case.mp3',
+            modify_date=123456789,
+            folder_path='/test/folder'
+        )
+        second_song = Song(
+            title='Tribute',
+            artist='Tenacious D',
+            language='English',
+            year=2022,
+            mp3_path='tenacious_d.mp3',
+            modify_date=123456789,
+            folder_path='/test/folder'
+        )
+
+        third_song = Song(
+            title='Africa',
+            artist='Toto',
+            language='English',
+            year=2022,
+            mp3_path='africa.mp3',
+            modify_date=123456789,
+            folder_path='/test/folder'
+        )
+        db.session.add(test_song)
+        db.session.add(second_song)
+        db.session.add(third_song)
+
+        db.session.commit()
+
+    response = client.get('/api/songs', query_string={'filter': filter})
+    assert response.status_code == 200
+    assert 'songs' in response.get_json()
+    songs = response.get_json()['songs']
+    assert [song['title'] for song in songs] == expected
+
+
 @pytest.mark.parametrize("limit,offset,expected",
                          [('1','0',1),
                           (2,0,2),

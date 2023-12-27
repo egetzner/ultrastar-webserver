@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, send_file
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from sqlalchemy.orm import class_mapper
 from dotenv import load_dotenv, find_dotenv
 
@@ -74,6 +75,7 @@ def model_to_dict(model):
 
 # Update the handle_song_request function
 def handle_song_request(request):
+    search_filter = request.args.get('filter')
     artist_filter = request.args.get('artist_filter')
     song_filter = request.args.get('song_filter')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
@@ -81,6 +83,12 @@ def handle_song_request(request):
     offset = request.args.get('offset', 0)  # Default offset to 0
 
     query = Song.query
+
+    if search_filter:
+        query = query.filter(or_(
+            Song.artist.like(f'%{search_filter}%'),
+            Song.title.like(f'%{search_filter}%'),
+        ))
 
     if artist_filter:
         query = query.filter(Song.artist.like(f"%{artist_filter}%"))
@@ -109,33 +117,21 @@ def handle_song_request(request):
     us_songs = [model_to_dict(song) for song in us_songs]
     songs = [model_to_dict(song) for song in songs]
 
-    if len(songs) > len(us_songs) or sort_by != 'times_played':
-        for song in songs:
-            match_found = False  # Flag variable to track if a match is found
-            for us_song in us_songs:
-                if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
-                    #print(f"match found for {song['artist']} - {song['title']}")
-                    song["times_played"] = us_song["TimesPlayed"]
-                    match_found = True
-                    break  # Break out of the inner loop
-            if not match_found:
-                song["times_played"] = 0
-    else:
+    # we have to iterate through all songs because we need to add the times_played field.
+    for song in songs:
+        match_found = False  # Flag variable to track if a match is found
         for us_song in us_songs:
-            match_found = False  # Flag variable to track if a match is found
-            for song in songs:
-                if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
-                    print(f"match found for {song['artist']} - {song['title']}")
-                    song["times_played"] = us_song["TimesPlayed"]
-                    match_found = True
-                    break  # Break out of the inner loop
-            if not match_found:
-                song["times_played"] = 0
+            if us_song["artist"].rstrip('\x00') == song["artist"] and us_song["title"].rstrip('\x00') == song["title"]:
+                song["times_played"] = us_song["TimesPlayed"]
+                match_found = True
+                break  # Break out of the inner loop
+        if not match_found:
+            song["times_played"] = 0
 
     if sort_by == 'times_played':
         # remove songs with 0 times played
         songs = [song for song in songs if song['times_played'] > 0]
-        songs = sorted(songs, key=lambda k: (-k['times_played'],k['artist']))
+        songs = sorted(songs, key=lambda k: (-k['times_played'], k['artist'], k['title']))
 
         if offset is not None or limit is not None:
             return songs[int(offset):min(int(offset)+int(limit), len(songs))]
@@ -146,11 +142,12 @@ def handle_song_request(request):
 @app.route('/')
 def index():
     songs = handle_song_request(request)
+    filter = request.args.get('filter', default='')
     artist_filter = request.args.get('artist_filter', default='')
     song_filter = request.args.get('song_filter', default='')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
     # get local ip
-    return render_template('index.html', songs=songs, artist_filter=artist_filter, song_filter=song_filter,
+    return render_template('index.html', songs=songs, filter=filter, artist_filter=artist_filter, song_filter=song_filter,
                            sort_by=sort_by, local_ip=QR_URL)
 
 
