@@ -132,9 +132,9 @@ def test_handle_song_request_search_filter(client, filter, expected):
 @pytest.mark.parametrize("limit,offset,expected",
                          [('1','0',1),
                           (2,0,2),
-                          (3,0,2),
+                          (3,0,3),
                           (1,1,1),
-                          ('1','2',0)])
+                          ('1','3',0)])
 def test_handle_song_request_with_times_play_sorted(client, limit, offset, expected):
     # Add necessary test data to the database
     with app.app_context():
@@ -190,13 +190,12 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
         assert songs[1]['times_played'] == 1
 
 
-
 @pytest.mark.parametrize("sort_by,expected",
                          [('title',['Africa', 'Basket Case', 'Tribute']),
                           ('artist',['Basket Case', 'Tribute', 'Africa']),
                           ('year',['Tribute', 'Basket Case', 'Africa']),
                           ('language',['Tribute', 'Basket Case', 'Africa']),
-                          ('times_played',['Basket Case', 'Tribute'])])
+                          ('times_played',['Basket Case', 'Tribute', 'Africa'])])
 def test_handle_song_request_sort(client, sort_by, expected):
     # Add necessary test data to the database
     with app.app_context():

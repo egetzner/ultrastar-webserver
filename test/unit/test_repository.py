@@ -49,6 +49,9 @@ def test_index_songs_added(db_session, mock_parse_text_file):
         'Title': 'Song 2',
         'Artist': 'Artist 2',
         'Language': 'English',
+        'Album': 'Album',
+        'Genre': 'My Genre',
+        'Edition': 'SingStar',
         'Year': 2022,
         'Mp3Path': '/path/to/song2.mp3',
         'ModifyDate': 1234567890,
@@ -75,6 +78,9 @@ def test_index_songs_edited(db_session, mock_parse_text_file):
         'Title': 'Song 2',
         'Artist': 'Artist 2',
         'Language': 'English',
+        'Album': 'Album',
+        'Genre': 'My Genre',
+        'Edition': 'SingStar',
         'Year': 2023,
         'Mp3Path': '/path/to/song2.mp3',
         'ModifyDate': 1234567890,
@@ -103,3 +109,6 @@ def test_index_songs_edited(db_session, mock_parse_text_file):
     assert updated_song.year == 2023
     assert updated_song.modify_date == 1234567890
     assert updated_song.folder_path == '/path/to/folder2'
+    assert updated_song.album == 'Album'
+    assert updated_song.edition == 'SingStar'
+    assert updated_song.genre == 'My Genre'

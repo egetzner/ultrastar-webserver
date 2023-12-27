@@ -15,8 +15,8 @@ SONG_DB = os.getenv('SONG_DB')
 ULTRASTAR_DB = os.getenv('ULTRASTAR_DB')
 
 
-def _create_sqlite_string(db):
-    path_with_args = db.removeprefix("sqlite:///")
+def _create_sqlite_string(connection_string):
+    path_with_args = connection_string.removeprefix("sqlite:///")
     path_and_args = path_with_args.split("?")
     path = path_and_args[0]
 
@@ -47,6 +47,9 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     artist = db.Column(db.String(255))
+    album = db.Column(db.String(255))
+    genre = db.Column(db.String(255))
+    edition = db.Column(db.String(255))
     language = db.Column(db.String(255))
     year = db.Column(db.Integer)
     mp3_path = db.Column(db.String(255), unique=True)
@@ -88,6 +91,9 @@ def handle_song_request(request):
         query = query.filter(or_(
             Song.artist.like(f'%{search_filter}%'),
             Song.title.like(f'%{search_filter}%'),
+            Song.album.like(f'%{search_filter}%'),
+            Song.genre.like(f'%{search_filter}%'),
+            Song.edition.like(f'%{search_filter}%')
         ))
 
     if artist_filter:
@@ -104,6 +110,12 @@ def handle_song_request(request):
         query = query.order_by(Song.year.desc(), Song.artist, Song.title)
     elif sort_by == 'language':
         query = query.order_by(Song.language.desc(), Song.artist, Song.title)
+    elif sort_by == 'genre':
+        query = query.order_by(Song.genre, Song.artist, Song.title)
+    elif sort_by == 'edition':
+        query = query.order_by(Song.edition, Song.artist, Song.title)
+    elif sort_by == 'album':
+        query = query.order_by(Song.album, Song.artist, Song.title)
 
     # if querying for times played, don't limit the results
     if sort_by != 'times_played':

@@ -67,6 +67,7 @@ def parse_text_file(text_file, song_path):
 
     return None
 
+
 def _parse_file_with_unknown_encoding(text_file):
     encodings = ["utf-8", "iso-8859-1", "ascii"]
 

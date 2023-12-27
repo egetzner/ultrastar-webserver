@@ -24,15 +24,15 @@
                     <label for="sort_by" class="block text-sm font-medium text-white">Sortieren nach:</label>
                     <select id="sort_by" name="sort_by"
                         class="mt-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
-                        <option value="artist" {% if sort_by=='artist' %}selected{% endif %}>Künstler:in</option>
-                        <option value="title" {% if sort_by=='title' %}selected{% endif %}>Liedertitel</option>
+                        <option value="artist" {% if sort_by=='artist' %}selected{% endif %}>Interpret</option>
+                        <option value="title" {% if sort_by=='title' %}selected{% endif %}>Titel</option>
                         <option value="language" {% if sort_by=='language' %}selected{% endif %}>Sprache</option>
                         <option value="year" {% if sort_by=='year' %}selected{% endif %}>Jahr</option>
                         <option value="times_played" {% if sort_by=='times_played' %}selected{% endif %}>Gespielt</option>
                     </select>
                 </div>
                 <div class="self-end">
-                    <input type="submit" value="Apply"
+                    <input type="submit" value="Suchen"
                         class="mt-1 px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
                 </div>
             </div>
@@ -59,17 +59,18 @@
             </div>
         </form>
 
-        <p class="mb-2 text-white">Showing {{ songs|length }} songs.</p>
-        <p class="mb-4 text-white">Click on the "Preview" button to play the song.</p>
+        <p class="mb-2 text-white">{{ songs|length }} Treffer werden angezeigt.</p>
+        <p class="mb-4 text-white text-sm">Drücke den "🔊" Knopf um das Lied anzuhören.</p>
+
         <table class="w-full">
             <thead>
                 <tr>
-                    <th class="px-4 py-2">ARTIST</th>
-                    <th class="px-4 py-2">TITLE</th>
-                    <th class="px-4 py-2">MP3</th>
-                    <th class="px-4 py-2">YEAR</th>
-                    <th class="px-4 py-2">LANGUAGE</th>
-                    <th class="px-4 py-2">TIMES PLAYED</th>
+                    <th class="px-4 py-2">Interpret</th>
+                    <th class="px-4 py-2">Titel</th>
+                    <th class="px-4 py-2">Jahr</th>
+                    <th class="px-4 py-2">Sprache</th>
+                    <th class="px-4 py-2">Gespielt</th>
+                    <th class="px-4 py-2">Anhören</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,18 +78,19 @@
                 <tr>
                     <td class="px-4 py-2">{{ song.artist }}</td>
                     <td class="px-4 py-2">{{ song.title }}</td>
-                    <td class="px-4 py-2">
-                        <button class="preview bg-blue-500 text-white px-4 py-2 rounded-md"
-                            mp3_path="{{ song.mp3_path }}">Preview</button>
-                    </td>
                     <td class="px-4 py-2">{{ song.year }}</td>
                     <td class="px-4 py-2">{{ song.language }}</td>
                     <td class="px-4 py-2">{{ song.times_played }}</td>
+                    <td class="px-4 py-2">
+                        <button class="preview bg-blue-500 text-white px-4 py-2 rounded-md self-center"
+                            mp3_path="{{ song.mp3_path }}">🔊</button>
+                    </td>
                     
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 
     <script>
