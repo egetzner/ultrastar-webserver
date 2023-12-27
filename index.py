@@ -10,10 +10,11 @@ find_dotenv(raise_error_if_not_found=True)
 load_dotenv()
 
 
-path_to_file = os.path.abspath(__file__)
 SONG_FOLDER = os.getenv('SONGFOLDER')
-
 SONG_DB = os.getenv('SONG_DB')
+
+print(f'Looking for Songs in {SONG_FOLDER}')
+print(f'Writing songs to {SONG_DB}')
 
 # Configure the SQLAlchemy engine
 engine = create_engine(SONG_DB)
@@ -25,6 +26,8 @@ session = Session()
 
 # Create or update songs in the database
 all_songs = get_filenames(SONG_FOLDER, 'txt')
+
+print(f'Found {len(all_songs)} files to parse...')
 
 # Create the database tables
 Base.metadata.create_all(engine)

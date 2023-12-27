@@ -7,7 +7,11 @@ def get_filenames(song_path, extension='txt'):
     if not os.path.exists(song_path):
         raise Exception(f"not a valid path: '{song_path}'")
 
-    return glob.glob(song_path + '*/*.' + extension)
+    if os.path.isdir(song_path):
+        directory = song_path
+    else:
+        directory = os.path.dirname(song_path)
+    return glob.glob(directory + '/**/*.' + extension)
 
 
 def parse_content(lines):
