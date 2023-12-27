@@ -12,10 +12,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout
 
     - name: Set up Poetry
-      uses: actions/setup-python@v2
+      uses: actions/setup-python
       with:
         python-version: 3.9
 
@@ -31,7 +31,27 @@ jobs:
         poetry run coverage html -d coverage_html
 
     - name: Upload Code Coverage Results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact
       with:
         name: coverage
         path: coverage_html/
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout
+
+    - name: Set up Poetry
+      uses: actions/setup-python
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry dependencies
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install --no-root
+
+    - name: Run Flake8 Linter
+      run: poetry run flake8
