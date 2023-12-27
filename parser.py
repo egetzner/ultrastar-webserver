@@ -4,13 +4,19 @@ import glob
 
 
 def get_songs(song_path):
+    if not os.path.exists(song_path):
+        raise Exception(f"not a valid path {song_path}")
+
     os.chdir(song_path)
     files = glob.glob('**/*.txt')
     all_songs = list()
     for file_path in files:
-        text_file = os.path.join(song_path, file_path)
+        text_file = os.path.abspath(os.path.join(song_path, file_path))
+        if not os.path.exists(text_file):
+            raise Exception(f"not a valid text file: {text_file}")
+
         data = parse_text_file(text_file)
-        if len(data) > 0:
+        if data is not None and len(data) > 0:
             data['Folder'] = os.path.dirname(file_path)
             data['FileName'] = os.path.basename(file_path)
             all_songs.append(data)
