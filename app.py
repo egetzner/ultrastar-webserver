@@ -13,10 +13,28 @@ SONGFOLDER = os.getenv('SONGFOLDER')
 SONG_DB = os.getenv('SONG_DB')
 ULTRASTAR_DB = os.getenv('ULTRASTAR_DB')
 
+
+def _create_sqlite_string(db):
+    path_with_args = db.removeprefix("sqlite:///")
+    path_and_args = path_with_args.split("?")
+    path = path_and_args[0]
+
+    args = ''
+    if len(path_and_args) > 1:
+        args = '?' + '?'.join(path_and_args[1:])
+
+    if os.path.isabs(path) or path == ':memory:':
+        abs_path = path
+    else:
+        abs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), path))
+
+    return 'sqlite:///' + abs_path + args
+
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = SONG_DB
+app.config['SQLALCHEMY_DATABASE_URI'] = _create_sqlite_string(SONG_DB)
 app.config['SQLALCHEMY_BINDS'] = {
-    'us_db': ULTRASTAR_DB
+    'us_db': _create_sqlite_string(ULTRASTAR_DB)
 }
 db = SQLAlchemy(app)
 
