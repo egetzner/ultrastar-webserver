@@ -11,6 +11,9 @@ class Song(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(255))
     artist = Column(String(255))
+    album = Column(String(255))
+    genre = Column(String(255))
+    edition = Column(String(255))
     language = Column(String(255))
     year = Column(Integer)
     mp3_path = Column(String(255), unique=True)
@@ -39,6 +42,7 @@ class SongIndexer:
 
                 song = Song(title=data.get('Title'),artist=data.get('Artist'),
                             language=data.get('Language'),year=data.get('Year'),
+                            album=data.get('Album'),genre=data.get('Genre'),edition=data.get('Edition'),
                             mp3_path=data.get('Mp3Path'),modify_date=data.get('ModifyDate'),
                             folder_path=data.get('Folder'))
 
@@ -49,6 +53,9 @@ class SongIndexer:
                     edited += 1
                     existing_song.title = song.title
                     existing_song.artist = song.artist
+                    existing_song.album = song.album
+                    existing_song.genre = song.genre
+                    existing_song.edition = song.edition
                     existing_song.language = song.language
                     existing_song.year = song.year
                     existing_song.modify_date = song.modify_date
