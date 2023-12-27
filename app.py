@@ -2,9 +2,10 @@ import os
 from flask import Flask, render_template, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # make sure to work inside the app context
+find_dotenv(raise_error_if_not_found=True)
 load_dotenv()
 
 QR_URL = os.getenv('QR_URL')
@@ -38,7 +39,7 @@ class Song(db.Model):
 class USSong(db.Model):
     __bind_key__ = 'us_db'
     __tablename__ = 'us_songs'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {'extend_existing': False}
     id = db.Column(db.Integer, primary_key=True)
     artist = db.Column(db.String(255))
     title = db.Column(db.String(255))
@@ -76,7 +77,7 @@ def handle_song_request(request):
     elif sort_by == 'year':
         query = query.order_by(Song.year)
 
-    # if querrying for times played, dont limit the results
+    # if querying for times played, don't limit the results
     if sort_by != 'times_played':
         query = query.limit(limit).offset(offset)
 

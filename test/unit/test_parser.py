@@ -1,15 +1,13 @@
 import os
 import pytest
-from parser import parse_text_file, get_songs
-from dotenv import load_dotenv
+from parser import parse_text_file
 
-load_dotenv()
-SONGFOLDER = os.getenv('SONGFOLDER')
+SONG_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__),"../data/songs"))
 
 
 def _parse_file(short_path):
-    filepath = os.path.join(SONGFOLDER, short_path)
-    return parse_text_file(filepath)
+    filepath = os.path.join(SONG_FOLDER, short_path)
+    return parse_text_file(filepath, SONG_FOLDER)
 
 
 @pytest.mark.parametrize("test_input,expected",
@@ -20,6 +18,9 @@ def test_read_single_file(test_input, expected):
 
     assert 'Title' in result
     assert result['Title'] == expected
+    assert result['Folder'] == os.path.dirname(test_input)
+    assert result['Mp3Path'] == test_input.replace(".txt",".mp3")
+
 
 
 def test_read_all_fields():
@@ -34,6 +35,9 @@ def test_read_all_fields():
     assert result['Edition'] == "Disney"
     assert result['Genre'] == "Musical"
     assert result['Year'] == "2017"
+
+    assert result['Folder'] == "Ariana Grande & John Legend - Beauty and the Beast"
+    assert result['Mp3Path'] == "Ariana Grande & John Legend - Beauty and the Beast/Ariana Grande & John Legend - Beauty and the Beast.mp3"
 
     assert not result['HasRap']
     assert not result['IsDuet']

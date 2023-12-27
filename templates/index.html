@@ -13,7 +13,7 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-4 text-white">Ultrastar Song DB</h1>
         <form method="GET" action="/" class="mb-4">
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 justify-content-center">
                 <div>
                     <label for="artist_filter" class="block text-sm font-medium text-white">Filter by Artist:</label>
                     <input type="text" id="artist_filter" name="artist_filter" value="{{ artist_filter }}"
@@ -37,7 +37,7 @@
                     </select>
                 </div>
                 <div>
-                    <input type="submit" value="Apply Filters"
+                    <input type="submit" value="Apply"
                         class="mt-1 px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
                 </div>
             </div>
