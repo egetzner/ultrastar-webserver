@@ -2,9 +2,10 @@ import os
 from flask import Flask, render_template, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # make sure to work inside the app context
+find_dotenv(raise_error_if_not_found=True)
 load_dotenv()
 
 QR_URL = os.getenv('QR_URL')

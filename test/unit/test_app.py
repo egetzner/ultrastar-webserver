@@ -45,7 +45,7 @@ def test_api_mp3(client):
         db.session.add(test_song)
         db.session.commit()
 
-    response = client.get('/api/mp3', query_string={'mp3_path': 'test/data/songs/test.mp3'})
+    response = client.get('/api/mp3', query_string={'mp3_path': 'test.mp3'})
     assert response.status_code == 200
     assert response.content_type == 'audio/mp3'
 
