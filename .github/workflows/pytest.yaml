@@ -1,0 +1,37 @@
+name: Test and Code Coverage
+
+on:
+  push:
+    branches:
+      - master
+      - development
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Poetry
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry dependencies
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install --no-root
+
+    - name: Run Tests and Code Coverage
+      run: |
+        poetry run coverage run -m pytest
+        poetry run coverage report
+        poetry run coverage html -d coverage_html
+
+    - name: Upload Code Coverage Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage_html/
