@@ -82,7 +82,7 @@ def handle_song_request(request):
     artist_filter = request.args.get('artist_filter')
     song_filter = request.args.get('song_filter')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
-    limit = request.args.get('limit', 1000)  # Default limit to 100 songs
+    limit = request.args.get('limit', 250)  # Default limit to 100 songs
     offset = request.args.get('offset', 0)  # Default offset to 0
 
     query = Song.query
@@ -174,11 +174,8 @@ def api_songs():
 def api_mp3():
     # this holds the relative path to the mp3 file
     mp3_path = request.args.get('mp3_path')
-    print(mp3_path)
     # concat the song path to the song folder
-    # NOTE: if the mp3_path is ABSOLUTE, which it is under linux if it starts with /, the songfolder is ignored.
     mp3_path = os.path.join(SONGFOLDER, mp3_path)
-    print(mp3_path)
     # prevent path traversal
     # return the song from the os
     return send_file(mp3_path, mimetype='audio/mp3')

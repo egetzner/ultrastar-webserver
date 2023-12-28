@@ -59,8 +59,8 @@
             </div>
         </form>
 
-        <p class="mb-2 text-white">{{ songs|length }} Treffer werden angezeigt.</p>
-        <p class="mb-4 text-white text-sm">Drücke den "🔊" Knopf um das Lied anzuhören.</p>
+        <div class="mb-2 text-white"><div id="songs-count" class="inline">{{ songs|length }}</div> Treffer werden angezeigt.</div>
+        <div class="mb-4 text-white text-sm">Drücke den "🔊" Knopf um das Lied anzuhören.</div>
 
         <table class="w-full">
             <thead>
@@ -76,13 +76,13 @@
             <tbody>
                 {% for song in songs %}
                 <tr>
-                    <td class="px-4 py-2">{{ song.artist }}</td>
-                    <td class="px-4 py-2">{{ song.title }}</td>
-                    <td class="px-4 py-2">{{ song.year }}</td>
-                    <td class="px-4 py-2">{{ song.language }}</td>
-                    <td class="px-4 py-2">{{ song.times_played }}</td>
-                    <td class="px-4 py-2">
-                        <button class="preview bg-blue-500 text-white px-4 py-2 rounded-md self-center"
+                    <td>{{ song.artist }}</td>
+                    <td>{{ song.title }}</td>
+                    <td>{{ song.year }}</td>
+                    <td>{{ song.language }}</td>
+                    <td>{{ song.times_played }}</td>
+                    <td>
+                        <button class="preview bg-blue-500 text-white rounded-md"
                             mp3_path="{{ song.mp3_path }}">🔊</button>
                     </td>
                     
@@ -100,11 +100,13 @@
       filterCollapse.classList.toggle('hidden');
     }
 
+const page_size = 250;
+
 $(document).ready(function() {
 
     var currentAudio = null;
     var isLoading = false;
-    var limit = 1000;
+    var limit = page_size;
     var offset = limit;
 
     function loadSongs() {
@@ -139,12 +141,15 @@ $(document).ready(function() {
                         $('<td></td>').text(song.year).appendTo(row);
                         $('<td></td>').text(song.language).appendTo(row);
                         $('<td></td>').text(song.times_played).appendTo(row);
-                        $('<td></td>').html('<button class="preview bg-blue-500 text-white px-4 py-2 rounded-md" mp3_path="' + song.mp3_path + '">🔊</button>').appendTo(row);
+                        $('<td></td>').html('<button class="preview bg-blue-500 text-white rounded-md" mp3_path="' + song.mp3_path + '">🔊</button>').appendTo(row);
 
                         row.appendTo('tbody');
                     }
 
                     offset += limit;
+
+                    // Update the songs count
+                    updateSongsCount(songs.length);
                 } else {
                     // No more songs to load
                     $(window).off('scroll');
@@ -157,9 +162,18 @@ $(document).ready(function() {
     }
 
 
+    function updateSongsCount(addedSongs) {
+        // Update the text content of the element that displays the number of songs
+        var songsCount = $('#songs-count');
+        var currentCount = parseInt(songsCount.text(), 10);
+        var newCount = currentCount + addedSongs;
+        songsCount.text(newCount);
+    }
+
+
     // Handle scrolling to the bottom of the page
     $(window).scroll(function() {
-        var threshold = 1000; // Adjust this value to define the threshold distance from the bottom
+        var threshold = page_size; // Adjust this value to define the threshold distance from the bottom
 
         if ($(window).scrollTop() + $(window).height() >= $(document).height() - threshold) {
             loadSongs();
