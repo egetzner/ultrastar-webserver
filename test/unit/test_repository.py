@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from repository import Song, SongIndexer, parse_text_file, Base
+from repository import Song, SongIndexer, Base
 
 # Use SQLite in-memory database for testing
 DATABASE_URL = "sqlite:///:memory:"

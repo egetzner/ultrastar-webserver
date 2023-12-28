@@ -28,13 +28,13 @@ jobs:
       run: |
         poetry run coverage run -m pytest
         poetry run coverage report
-        poetry run coverage html -d coverage_html
+        poetry run coverage xml coverage/coverage.xml
 
-    - name: Upload Code Coverage Results
-      uses: actions/upload-artifact@v2
+    - name: Get Cover
+      uses: orgoro/coverage@v3.1
       with:
-        name: coverage
-        path: coverage_html/
+          coverageFile: coverage/coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest

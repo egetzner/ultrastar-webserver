@@ -15,35 +15,36 @@ def get_filenames(song_path, extension='txt'):
 
 
 def parse_content(lines):
-    if lines is not None:
-        data = dict()
-        is_duet = False
-        is_rap = False
-        max_beat = 0
-        players = set()
-        for line in lines:
+    if not lines:
+        return None
 
-            match = re.search('#([\w\d]+):(.*)', line)
+    data = dict()
+    is_duet = False
+    is_rap = False
+    max_beat = 0
+    players = set()
+    for line in lines:
+
+        match = re.search('#([\w\d]+):(.*)', line)
+        if match:
+            data[match.group(1).title()] = match.group(2).strip()
+        else:
+            match = re.search('^.\s(\d+)', line)
             if match:
-                data[match.group(1).title()] = match.group(2).strip()
-            else:
-                match = re.search('^.\s(\d+)', line)
-                if match:
-                    beat = int(match.group(1))
-                    if beat < max_beat:
-                        is_duet = True
-                    max_beat = beat
+                beat = int(match.group(1))
+                if beat < max_beat:
+                    is_duet = True
+                max_beat = beat
 
-                if re.search('^[R|G]\s', line):
-                    is_rap = True
+            if re.search('^[R|G]\s', line):
+                is_rap = True
 
-                if line.startswith('P'):
-                    players.add(line.strip())
+            if line.startswith('P'):
+                players.add(line.strip())
 
-        data['Players'] = players
-        data['HasRap'] = is_rap
-        data['IsDuet'] = len(players) > 0 | is_duet
-
+    data['Players'] = players
+    data['HasRap'] = is_rap
+    data['IsDuet'] = len(players) > 0 | is_duet
     return data
 
 
