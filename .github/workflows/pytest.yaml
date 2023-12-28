@@ -26,13 +26,8 @@ jobs:
 
     - name: Run Tests and Code Coverage
       run: |
-        poetry run pytest --cov --cov-report=xml:coverage/coverage.xml
-
-    - name: Get Cover
-      uses: orgoro/coverage@v3.1
-      with:
-          coverageFile: coverage/coverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+        poetry run coverage run -m pytest
+        poetry run coverage report
 
   lint:
     runs-on: ubuntu-latest
