@@ -42,5 +42,6 @@ testpaths = [
 
 [tool.coverage.report]
 omit = [
-    "test/*"
+    "test/*",
+    "coverage/*"
     ]

@@ -76,6 +76,6 @@ Pull requests are welcome! If you have any ideas for new features or improvement
 ## Tests and Code Coverage
 
 - using `pytest` and `coverage` packages to test the code
-- run `poetry coverage run -m pytest && poetry coverage report | html`
+- run `poetry run coverage run -m pytest && poetry run coverage report | html`
 - OR:
-- run `pytest --cov --cov-report=html:coverage_re` in a terminal to see the test coverage report and run all pytests (depends on pytest-cov)
+- run `pytest --cov --cov-report=xml:coverage/coverage.xml` in a terminal to see the test coverage report and run all pytests (depends on pytest-cov)
