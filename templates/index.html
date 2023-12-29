@@ -30,9 +30,18 @@
                 </div>
             </div>
 
-            <!-- Sort dropdown -->
-            <div id="sortDropDown" class="mt-4">
-                <label for="sort_by" class="text-sm font-medium text-white">Sortieren nach:</label>
+            <!-- Sort dropdown and Checkbox -->
+            <div class="mt-4 flex items-center">
+
+                 <!-- Checkbox -->
+                <div class="flex items-center mx-5">
+                    <input type="hidden" id="duetValue" name="duet_only" value="{{ duet_only }}">
+                    <input type="checkbox" id="duetCheckbox" onchange="updateDuetValue()" {% if duet_only=='true' %}checked{% endif %}
+                           class="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="duetCheckbox" class="ml-2 text-sm text-white">als Duett verfügbar</label>
+                </div>
+
+                <label for="sort_by" class="text-sm font-medium text-white mr-2">Sortieren nach:</label>
                 <select id="sort_by" name="sort_by" onchange="submitForm()" class="px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
                     <option value="artist" {% if sort_by=='artist' %}selected{% endif %}>Interpret</option>
                     <option value="title" {% if sort_by=='title' %}selected{% endif %}>Titel</option>
@@ -40,41 +49,7 @@
                     <option value="year" {% if sort_by=='year' %}selected{% endif %}>Jahr</option>
                     <option value="times_played" {% if sort_by=='times_played' %}selected{% endif %}>Gespielt</option>
                 </select>
-            </div>
-        </form>
-        <form method="GET" action="/" class="mb-4 hidden">
-            <div class="flex space-x-4 mb-4 ">
-                <div class="self-center">
-                  <label for="filter" class="block text-sm font-medium">Suche:</label>
-                  <input type="search" id="filter" name="filter" value="{{ filter }}"
-                         class="mt-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
-                </div>
 
-                <div class="self-end">
-                    <input type="submit" value="Suchen"
-                        class="mt-1 px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
-                </div>
-            </div>
-
-            <!-- Collapsible Row -->
-            <div class="flex items-center hidden">
-              <button class="text-white" type="button" onclick="toggleFilters()">
-                More Filters
-              </button>
-            </div>
-
-            <!-- Collapsible Content -->
-            <div id="filterCollapse" class="hidden transition-all duration-300 mb-4">
-              <div class="flex items-center mb-4">
-                <label for="artist_filter" class="block text-sm font-medium">Filter by Artist:</label>
-                <input type="text" id="artist_filter" name="artist_filter" value="{{ artist_filter }}"
-                       class="ml-2 mt-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
-              </div>
-              <div class="flex items-center">
-                <label for="song_filter" class="block text-sm font-medium">Filter by Song:</label>
-                <input type="text" id="song_filter" name="song_filter" value="{{ song_filter }}"
-                       class="ml-2 mt-1 px-4 py-2 border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-400">
-              </div>
             </div>
         </form>
 
@@ -120,6 +95,18 @@
       filterCollapse.classList.toggle('hidden');
     }
 
+
+function updateDuetValue() {
+    var checkbox = document.getElementById('duetCheckbox'); // Correct the id to 'duetCheckbox'
+    var hiddenInput = document.getElementById('duetValue');
+
+    // Update the value of the hidden input based on the checkbox state
+    hiddenInput.value = checkbox.checked ? 'true' : 'false';
+
+    // Optionally, you can submit the form here if needed
+    submitForm();
+}
+
 function submitForm() {
     // Assuming your form has the id 'searchForm', you can adjust this accordingly
     document.getElementById('searchForm').submit();
@@ -128,7 +115,6 @@ function submitForm() {
 const page_size = 250;
 
 $(document).ready(function() {
-
     var currentAudio = null;
     var isLoading = false;
     var limit = page_size;
@@ -146,6 +132,7 @@ $(document).ready(function() {
             data: {
                 offset: offset,
                 limit: limit,
+                duet_only: $('#duet_only').val(),
                 filter: $('#filter').val(),
                 artist_filter: $('#artist_filter').val(),
                 song_filter: $('#song_filter').val(),

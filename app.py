@@ -51,6 +51,7 @@ class Song(db.Model):
     genre = db.Column(db.String(255))
     edition = db.Column(db.String(255))
     language = db.Column(db.String(255))
+    is_duet = db.Column(db.Boolean)
     year = db.Column(db.Integer)
     mp3_path = db.Column(db.String(255), unique=True)
     modify_date = db.Column(db.Integer)
@@ -81,6 +82,7 @@ def handle_song_request(request):
     search_filter = request.args.get('filter')
     artist_filter = request.args.get('artist_filter')
     song_filter = request.args.get('song_filter')
+    only_duets = request.args.get('duet_only') == 'true'
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
     limit = request.args.get('limit', 250)  # Default limit to 100 songs
     offset = request.args.get('offset', 0)  # Default offset to 0
@@ -101,6 +103,9 @@ def handle_song_request(request):
 
     if song_filter:
         query = query.filter(Song.title.like(f"%{song_filter}%"))
+
+    if only_duets:
+        query = query.filter(Song.is_duet)
 
     if sort_by == 'artist':
         query = query.order_by(Song.artist, Song.title)
@@ -155,12 +160,13 @@ def handle_song_request(request):
 def index():
     songs = handle_song_request(request)
     filter = request.args.get('filter', default='')
+    duet_only = request.args.get('duet_only', default='')
     artist_filter = request.args.get('artist_filter', default='')
     song_filter = request.args.get('song_filter', default='')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
     # get local ip
     return render_template('index.html', songs=songs, filter=filter, artist_filter=artist_filter, song_filter=song_filter,
-                           sort_by=sort_by, local_ip=QR_URL)
+                           duet_only=duet_only, sort_by=sort_by, local_ip=QR_URL)
 
 
 @app.route('/api/songs')
