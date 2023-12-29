@@ -36,7 +36,7 @@
                  <!-- Checkbox -->
                 <div class="flex items-center mx-5">
                     <input type="hidden" id="duetValue" name="duet_only" value="{{ duet_only }}">
-                    <input type="checkbox" id="duetCheckbox" onchange="updateDuetValue()" {% if duet_only=='true' %}checked{% endif %}
+                    <input type="checkbox" id="duetCheckbox" onchange="updateDuetValueAndSubmit()" {% if duet_only=='true' %}checked{% endif %}
                            class="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <label for="duetCheckbox" class="ml-2 text-sm text-white">als Duett verfügbar</label>
                 </div>
@@ -95,13 +95,17 @@
       filterCollapse.classList.toggle('hidden');
     }
 
-
 function updateDuetValue() {
-    var checkbox = document.getElementById('duetCheckbox'); // Correct the id to 'duetCheckbox'
+    var checkbox = document.getElementById('duetCheckbox');
     var hiddenInput = document.getElementById('duetValue');
 
     // Update the value of the hidden input based on the checkbox state
     hiddenInput.value = checkbox.checked ? 'true' : 'false';
+}
+
+function updateDuetValueAndSubmit() {
+
+    updateDuetValue()
 
     // Optionally, you can submit the form here if needed
     submitForm();
@@ -127,15 +131,16 @@ $(document).ready(function() {
 
         isLoading = true;
 
+        //ensure we pass the right value!
+        updateDuetValue()
+
         $.ajax({
             url: '/api/songs',
             data: {
                 offset: offset,
                 limit: limit,
-                duet_only: $('#duet_only').val(),
-                filter: $('#filter').val(),
-                artist_filter: $('#artist_filter').val(),
-                song_filter: $('#song_filter').val(),
+                duet_only: $('#duetValue').val(),
+                filter: $('#default-search').val(),
                 sort_by: $('#sort_by').val()
             },
             success: function(data) {
