@@ -121,6 +121,8 @@ def handle_song_request(request):
         query = query.order_by(Song.edition, Song.artist, Song.title)
     elif sort_by == 'album':
         query = query.order_by(Song.album, Song.artist, Song.title)
+    elif sort_by == 'date_added':
+        query = query.order_by(Song.modify_date.desc(), Song.artist, Song.title)
 
     # if querying for times played, don't limit the results
     if sort_by != 'times_played':
