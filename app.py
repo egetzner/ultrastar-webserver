@@ -56,6 +56,7 @@ class Song(db.Model):
     mp3_path = db.Column(db.String(255), unique=True)
     modify_date = db.Column(db.Integer)
     folder_path = db.Column(db.String(255))
+    errors = db.Column(db.String(255))
 
 
 # Create a class for the us_songs table
@@ -87,7 +88,8 @@ def handle_song_request(request):
     limit = request.args.get('limit', 250)  # Default limit to 100 songs
     offset = request.args.get('offset', 0)  # Default offset to 0
 
-    query = Song.query
+    # don't show songs with errors
+    query = Song.query.filter(Song.errors.is_(None))
 
     if search_filter:
         words = search_filter.split(' ')
