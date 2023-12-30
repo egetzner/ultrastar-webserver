@@ -1,11 +1,15 @@
-from repository import Song
-from index import session
+import os
+from server.repository import Song
+from index import SongProcessor
 
-# NOTE: this will expect the .env file, instead of the setup .test.env file, because it imports from index directly.
+SONG_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/songs"))
+SONG_DB = 'sqlite:///:memory:'
 
+processor = SongProcessor(SONG_FOLDER, SONG_DB)
+processor.process_songs()
+session = processor.session_factory()
 
 def test_german_song():
-
     result = session.query(Song).filter_by(title="Cruella De Vil").first()
 
     assert result.artist == "101 Dalmatiner"
@@ -17,7 +21,6 @@ def test_german_song():
 
 
 def test_english_song():
-
     result = session.query(Song).filter_by(artist="10CC").first()
 
     assert result.title == "I'm Not In Love"
@@ -30,21 +33,18 @@ def test_english_song():
 
 
 def test_duet():
-
     result = session.query(Song).filter_by(is_duet=True).first()
 
     assert result.title.startswith("Beauty and the Beast")
 
 
 def test_rap():
-
     result = session.query(Song).filter_by(is_rap=True).first()
 
     assert result.title == "Lose yourself"
 
 
 def test_cover():
-
     result = session.query(Song).filter_by(album='Hamilton').first()
 
     assert result.title == "Cabinet Battle #1"

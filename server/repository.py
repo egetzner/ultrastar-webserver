@@ -1,4 +1,4 @@
-from parser import parse_text_file
+from server.parser import parse_text_file
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -22,6 +22,7 @@ class Song(Base):
     cover_path = Column(String(255))
     modify_date = Column(Integer)
     folder_path = Column(String(255))
+    errors = Column(String(255))
 
 
 class SongIndexer:
@@ -38,17 +39,19 @@ class SongIndexer:
         for i in range(0, len(all_songs), self.batch_size):
             for file in all_songs[i:i + self.batch_size]:
 
-                data = parse_text_file(file, song_folder)
-
-                if data is None:
-                    break
+                try:
+                    data = parse_text_file(file, song_folder)
+                except SyntaxError:
+                    print(f"Syntax error in file: {file}")
+                    continue
 
                 song = Song(title=data.get('Title'),artist=data.get('Artist'),
                             language=data.get('Language'),year=data.get('Year'),
                             album=data.get('Album'),genre=data.get('Genre'),edition=data.get('Edition'),
                             is_rap=data.get('HasRap', False), is_duet=data.get('IsDuet', False),
                             mp3_path=data.get('Mp3Path'),modify_date=data.get('ModifyDate'),
-                            cover_path=data.get('Cover'),folder_path=data.get('Folder'))
+                            cover_path=data.get('Cover'),folder_path=data.get('Folder'),
+                            errors=data.get('Errors'))
 
                 # depending on what we find to be the "unique key" - currently it's the mp3 file
                 existing_song = self.session.query(Song).filter_by(mp3_path=data['Mp3Path']).first()
@@ -87,6 +90,9 @@ class SongIndexer:
 
                     if song.folder_path is not None:
                         existing_song.folder_path = song.folder_path
+
+                    if song.errors is not None:
+                        existing_song.errors = song.errors
                 else:
                     added += 1
                     self.session.add(song)

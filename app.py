@@ -90,13 +90,15 @@ def handle_song_request(request):
     query = Song.query
 
     if search_filter:
-        query = query.filter(or_(
-            Song.artist.like(f'%{search_filter}%'),
-            Song.title.like(f'%{search_filter}%'),
-            Song.album.like(f'%{search_filter}%'),
-            Song.genre.like(f'%{search_filter}%'),
-            Song.edition.like(f'%{search_filter}%')
-        ))
+        words = search_filter.split(' ')
+        for word in words:
+            query = query.filter(or_(
+                Song.artist.like(f'%{word}%'),
+                Song.title.like(f'%{word}%'),
+                Song.album.like(f'%{word}%'),
+                Song.genre.like(f'%{word}%'),
+                Song.edition.like(f'%{word}%')
+            ))
 
     if artist_filter:
         query = query.filter(Song.artist.like(f"%{artist_filter}%"))
@@ -153,7 +155,7 @@ def handle_song_request(request):
         songs = sorted(songs, key=lambda k: (-k['times_played'], k['artist'], k['title']))
 
         if offset is not None or limit is not None:
-            return songs[int(offset):min(int(offset)+int(limit), len(songs))]
+            return songs[int(offset):min(int(offset) + int(limit), len(songs))]
 
     return songs
 
@@ -167,7 +169,8 @@ def index():
     song_filter = request.args.get('song_filter', default='')
     sort_by = request.args.get('sort_by', 'artist')  # Default sort by artist
     # get local ip
-    return render_template('index.html', songs=songs, filter=filter, artist_filter=artist_filter, song_filter=song_filter,
+    return render_template('index.html', songs=songs, filter=filter, artist_filter=artist_filter,
+                           song_filter=song_filter,
                            duet_only=duet_only, sort_by=sort_by, local_ip=QR_URL)
 
 

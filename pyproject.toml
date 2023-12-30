@@ -43,5 +43,6 @@ testpaths = [
 [tool.coverage.report]
 omit = [
     "test/*",
-    "coverage/*"
+    "coverage/*",
+    "/usr/share/*"
     ]

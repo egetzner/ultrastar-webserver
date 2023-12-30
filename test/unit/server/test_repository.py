@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from repository import Song, SongIndexer, Base
+from server.repository import Song, SongIndexer, Base
 
 # Use SQLite in-memory database for testing
 DATABASE_URL = "sqlite:///:memory:"
@@ -29,7 +29,7 @@ def db_session(engine):
 
 @pytest.fixture
 def mock_parse_text_file():
-    with patch('repository.parse_text_file') as mock_parse:
+    with patch('server.repository.parse_text_file') as mock_parse:
         yield mock_parse
 
 
@@ -61,7 +61,8 @@ def test_index_songs_added(db_session, mock_parse_text_file):
         'Year': 2022,
         'Mp3Path': '/path/to/song2.mp3',
         'ModifyDate': 1234567890,
-        'Folder': '/path/to/folder2'
+        'Folder': '/path/to/folder2',
+        'Errors': 'test errors'
     }]
 
     # Create an instance of the SongIndexer with the in-memory database session
@@ -91,6 +92,7 @@ def test_index_songs_added(db_session, mock_parse_text_file):
     assert added_songs[1].year == 2022
     assert added_songs[1].mp3_path == '/path/to/song2.mp3'
     assert added_songs[1].folder_path == '/path/to/folder2'
+    assert added_songs[1].errors == 'test errors'
 
 
 def test_index_songs_edited(db_session, mock_parse_text_file):

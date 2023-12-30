@@ -4,20 +4,13 @@ import glob
 
 
 def get_filenames(song_path, extension='txt'):
-    if not os.path.exists(song_path):
+    if not os.path.exists(song_path) or not os.path.isdir(song_path):
         raise Exception(f"not a valid path: '{song_path}'")
 
-    if os.path.isdir(song_path):
-        directory = song_path
-    else:
-        directory = os.path.dirname(song_path)
-    return glob.glob(directory + '/**/*.' + extension)
+    return glob.glob(f'{song_path}/**/*.{extension}')
 
 
 def parse_content(lines):
-    if not lines:
-        return None
-
     data = dict()
     is_duet = False
     is_rap = False
@@ -25,18 +18,18 @@ def parse_content(lines):
     players = set()
     for line in lines:
 
-        match = re.search('#([\w\d]+):(.*)', line)
+        match = re.search(r'#([\w\d]+):(.*)', line)
         if match:
             data[match.group(1).title()] = match.group(2).strip()
         else:
-            match = re.search('^.\s(\d+)', line)
+            match = re.search(r'^.\s(\d+)', line)
             if match:
                 beat = int(match.group(1))
                 if beat < max_beat:
                     is_duet = True
                 max_beat = beat
 
-            if re.search('^[R|G]\s', line):
+            if re.search(r'^[R|G]\s', line):
                 is_rap = True
 
             if line.startswith('P'):
@@ -50,23 +43,27 @@ def parse_content(lines):
 
 def parse_text_file(text_file, song_path):
     data = _parse_file_with_unknown_encoding(text_file)
-    if data is not None and len(data) > 0:
+    folder = os.path.dirname(text_file)
 
-        folder = os.path.dirname(text_file)
-        mp3_path = os.path.join(folder, data['Mp3'])
+    if data is None:
+        raise SyntaxError(f"Invalid File: {text_file}")
+    else:
+        mp3 = data.get('Mp3', '')
 
-        if not os.path.exists(mp3_path):
-            print(f"Warning: MP3 Not found: {mp3_path}")
-            return None
+        if len(mp3) > 0:
+            mp3_path = os.path.join(folder, mp3)
+            data['Mp3Path'] = os.path.relpath(mp3_path, start=song_path)
 
-        data['FileName'] = os.path.basename(text_file)
-        data['Folder'] = os.path.relpath(folder, start=song_path)
-        data['Mp3Path'] = os.path.relpath(mp3_path, start=song_path)
-        data['ModifyDate'] = os.path.getmtime(folder)
+            if not os.path.exists(mp3_path):
+                data['Errors'] = "MP3 not found"
+        else:
+            raise SyntaxError(f"No MP3 found in keys: [{str.join(',', data.keys())}]")
 
-        return data
+    data['Folder'] = os.path.relpath(folder, start=song_path)
+    data['FileName'] = os.path.basename(text_file)
+    data['ModifyDate'] = os.path.getmtime(folder)
 
-    return None
+    return data
 
 
 def _parse_file_with_unknown_encoding(text_file):
@@ -77,6 +74,7 @@ def _parse_file_with_unknown_encoding(text_file):
             with open(text_file, "r", encoding=encoding) as file:
                 lines = file.readlines()
                 return parse_content(lines)
-        except Exception as ex:
-            print(ex)
-            print("couldn't read file: " + text_file)
+        except UnicodeDecodeError:
+            pass
+
+    return None

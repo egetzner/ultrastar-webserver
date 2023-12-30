@@ -82,9 +82,49 @@ def test_handle_song_request(client):
     assert songs[0]['times_played'] == 1
 
 
+def test_handle_song_request_duet_only(client):
+    # Add necessary test data to the database
+    with app.app_context():
+        test_song = Song(
+            title='Basket Case',
+            artist='Green Day',
+            language='English',
+            is_duet=False,
+            year=2022,
+            mp3_path='green_day_basket_case.mp3',
+            modify_date=123456789,
+            folder_path='/test/folder'
+        )
+        db.session.add(test_song)
+
+        duet_song = Song(
+            title='Tribute',
+            artist='Tenacious D',
+            language='English',
+            is_duet=True,
+            year=2022,
+            mp3_path='tenacious_d.mp3',
+            modify_date=123456789,
+            folder_path='/test/folder'
+        )
+        db.session.add(duet_song)
+
+        db.session.commit()
+
+    response = client.get('/api/songs', query_string={'duet_only': 'true'})
+    assert response.status_code == 200
+    assert 'songs' in response.get_json()
+    songs = response.get_json()['songs']
+    assert len(songs) == 1
+    assert songs[0]['title'] == 'Tribute'
+
+
 @pytest.mark.parametrize("filter,expected",
                          [('Green', ['Basket Case']),
-                          ('Basket', ['Basket Case'])])
+                          ('Basket', ['Basket Case']),
+                          ('Green Basket ', ['Basket Case']),
+                          (' tenacious ', ['Tribute']),
+                          (' toto ', ['Africa'])])
 def test_handle_song_request_search_filter(client, filter, expected):
     # Add necessary test data to the database
     with app.app_context():
@@ -195,7 +235,12 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
                           ('artist', ['Hello', 'Basket Case', 'Tribute']),
                           ('year', ['Hello', 'Tribute', 'Basket Case']),
                           ('language', ['Tribute', 'Hello', 'Basket Case']),
-                          ('times_played', ['Basket Case', 'Tribute'])])
+                          ('times_played', ['Basket Case', 'Tribute']),
+                          ('date_added', ['Tribute', 'Hello', 'Basket Case']),
+                          ('album', ['Basket Case', 'Tribute', 'Hello']),
+                          ('genre', ['Basket Case', 'Tribute', 'Hello']),
+                          ('edition', ['Basket Case', 'Tribute', 'Hello']),
+                          ])
 def test_handle_song_request_sort(client, sort_by, expected):
     # Add necessary test data to the database
     with app.app_context():
@@ -205,7 +250,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             language='English',
             year=2002,
             mp3_path='green_day_basket_case.mp3',
-            modify_date=123456789,
+            modify_date=11111,
             folder_path='/test/folder'
         )
         second_song = Song(
@@ -214,7 +259,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             language='German',
             year=2010,
             mp3_path='tenacious_d.mp3',
-            modify_date=123456789,
+            modify_date=33333,
             folder_path='/test/folder'
         )
 
@@ -227,7 +272,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             language='English',
             year=2015,
             mp3_path='adele.mp3',
-            modify_date=123456789,
+            modify_date=22222,
             folder_path='/test/folder'
         )
         db.session.add(test_song)
