@@ -47,11 +47,22 @@ def test_duet():
     assert len(versions) == 2
     assert len(info) == 1
 
+    assert info[0].title == "Beauty and the Beast"
+    assert info[0].category == "Disney"
+    assert info[0].movie == "Beauty and the Beast (2017)"
+    assert info[0].ost == "Beauty and the Beast"
+
 
 def test_rap():
     result = session.query(Song).filter_by(is_rap=True).first()
+    info = session.query(SongInfo).filter_by(folder='Eminem - Lose yourself').all()
+
+    assert len(info) == 1
 
     assert result.title == "Lose yourself"
+    assert info[0].title == "Lose yourself"
+    assert info[0].ost == "8 Mile"
+    assert info[0].interests == "Elisabeth,Theo"
 
 
 def test_cover():

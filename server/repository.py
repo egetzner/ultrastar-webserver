@@ -38,22 +38,23 @@ class SongVersion(Base):
 
 class SongInfo(Base):
     __tablename__ = "song_info"
-    folder = Column(String, primary_key=True)
-    Artist = Column(String),
-    Title = Column(String),
-    Notes = Column(String),
-    Language = Column(String),
-    Album = Column(String),
-    Year = Column(Integer),
-    IsDuet = Column(Boolean),
-    IsNew = Column(Boolean),
-    Genre = Column(String),
-    Edition = Column(String),
-    Country = Column(String),
-    Category = Column(String),
-    Movie = Column(String),
-    Tags = Column(String),
-    OST = Column(String),
+    id = Column(Integer, primary_key=True)
+    folder = Column(String)
+    artist = Column(String)
+    title = Column(String)
+    notes = Column(String)
+    language = Column(String)
+    album = Column(String)
+    year = Column(Integer)
+    isDuet = Column(Boolean)
+    isNew = Column(Boolean)
+    genre = Column(String)
+    edition = Column(String)
+    country = Column(String)
+    category = Column(String)
+    movie = Column(String)
+    tags = Column(String)
+    ost = Column(String)
     interests = Column(String)
 
 
