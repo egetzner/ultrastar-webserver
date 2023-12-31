@@ -1,13 +1,18 @@
 import os
-from server.repository import Song, SongVersion
+from server.repository import Song, SongVersion, SongInfo
 from index import SongProcessor
+from server.tags.excel import excel_to_sqlite
 
 SONG_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/songs"))
-SONG_DB = 'sqlite:///:memory:'
+EXCEL_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/db/song_info_2020-08-11.xlsx"))
+OUTPUT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '../output'))
+SONG_DB = os.path.join(OUTPUT_FOLDER,"output.db")
 
-processor = SongProcessor(SONG_FOLDER, SONG_DB)
+processor = SongProcessor(SONG_FOLDER, f'sqlite:///{SONG_DB}')
 processor.process_songs()
 session = processor.session_factory()
+
+excel_to_sqlite(EXCEL_FILE, SONG_DB)
 
 
 def test_german_song():
@@ -36,10 +41,11 @@ def test_english_song():
 def test_duet():
     song = session.query(Song).filter_by(is_duet=True).first()
     versions = session.query(SongVersion).filter_by(folder='Ariana Grande & John Legend - Beauty and the Beast').all()
-
-    assert len(versions) == 2
+    info = session.query(SongInfo).filter_by(folder='Ariana Grande & John Legend - Beauty and the Beast').all()
 
     assert song.title.startswith("Beauty and the Beast")
+    assert len(versions) == 2
+    assert len(info) == 1
 
 
 def test_rap():

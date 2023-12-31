@@ -36,6 +36,27 @@ class SongVersion(Base):
     is_duet = Column(Boolean)
 
 
+class SongInfo(Base):
+    __tablename__ = "song_info"
+    folder = Column(String, primary_key=True)
+    Artist = Column(String),
+    Title = Column(String),
+    Notes = Column(String),
+    Language = Column(String),
+    Album = Column(String),
+    Year = Column(Integer),
+    IsDuet = Column(Boolean),
+    IsNew = Column(Boolean),
+    Genre = Column(String),
+    Edition = Column(String),
+    Country = Column(String),
+    Category = Column(String),
+    Movie = Column(String),
+    Tags = Column(String),
+    OST = Column(String),
+    interests = Column(String)
+
+
 class SongIndexer:
     def __init__(self, session, batch_size=250):
         self.session = session

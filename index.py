@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv, find_dotenv
 from server.parser import get_filenames
 from server.repository import SongIndexer, Base
+from server.tags.excel import excel_to_sqlite
 
 
 class SongProcessor:
@@ -39,9 +40,12 @@ if __name__ == "__main__":
 
     SONG_FOLDER = os.getenv('SONGFOLDER')
     SONG_DB = os.getenv('SONG_DB')
+    TAG_EXCEL = os.getenv('EXCEL_FILE')
 
     print(f'Looking for Songs in {SONG_FOLDER}')
     print(f'Writing songs to {SONG_DB}')
+    print(f'Getting tags from {TAG_EXCEL}')
 
+    excel_to_sqlite(TAG_EXCEL, SONG_DB)
     processor = SongProcessor(SONG_FOLDER, SONG_DB)
     processor.process_songs()
