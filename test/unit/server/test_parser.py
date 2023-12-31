@@ -34,6 +34,7 @@ def test_read_missing_mp3_file():
     assert result['Artist'] == "Crazy Ex-Girlfriend"
     assert result['Folder'] == "Crazy Ex-Girlfriend - You Stupid Bitch"
     assert result['Mp3Path'] == "Crazy Ex-Girlfriend - You Stupid Bitch/Crazy Ex-Girlfriend - You Stupid Bitch.mp3"
+    assert result['TxtPath'] == "Crazy Ex-Girlfriend - You Stupid Bitch/Crazy Ex-Girlfriend - You Stupid Bitch.txt"
     assert result['Errors'] == "MP3 not found"
 
 
@@ -51,6 +52,7 @@ def test_read_single_file(test_input, expected):
     assert 'Title' in result
     assert result['Title'] == expected
     assert result['Folder'] == os.path.dirname(test_input)
+    assert result['TxtPath'] == test_input
     assert result['Mp3Path'] == test_input.replace(".txt", ".mp3")
 
 
@@ -69,6 +71,7 @@ def test_read_all_fields():
     assert result['Year'] == "2017"
 
     assert result['Folder'] == "Ariana Grande & John Legend - Beauty and the Beast"
+    assert result['TxtPath'] == short_path
     assert result['Mp3Path'] == "Ariana Grande & John Legend - Beauty and the Beast" \
                                 "/Ariana Grande & John Legend - Beauty and the Beast.mp3"
 
@@ -89,6 +92,7 @@ def test_read_all_fields_duet():
     assert result['Edition'] == "Disney"
     assert result['Genre'] == "Musical"
     assert result['Year'] == "2017"
+    assert result['TxtPath'] == short_path
 
     assert result['Players'] == {"P 1", "P 2"}
     assert not result['HasRap']
@@ -107,6 +111,7 @@ def test_read_all_fields_duet_freestyle():
     assert result['Edition'] == "Musicals"
     assert result['Genre'] == "Musical"
     assert result['Year'] == "2015"
+    assert result['TxtPath'] == short_path
 
     assert result['Players'] == {"P 1", "P 2"}
     assert not result['HasRap']  # because it is freestyle
@@ -123,6 +128,7 @@ def test_read_all_fields_rap():
     assert result['Language'] == "English"
     assert result['Genre'] == "Rap"
     assert result['Year'] == "2002"
+    assert result['TxtPath'] == short_path
 
     assert result['Players'] == set()
     assert result['HasRap']

@@ -21,8 +21,19 @@ class Song(Base):
     mp3_path = Column(String(255), unique=True)
     cover_path = Column(String(255))
     modify_date = Column(Integer)
-    folder_path = Column(String(255))
+    folder = Column(String(255))
     errors = Column(String(255))
+
+
+class SongVersion(Base):
+    __tablename__ = 'song_version'
+    id = Column(Integer, primary_key=True)
+    folder = Column(String(255))
+    txt_path = Column(String(255), unique=True)
+    modify_date = Column(Integer)
+    errors = Column(String(255))
+    is_rap = Column(Boolean)
+    is_duet = Column(Boolean)
 
 
 class SongIndexer:
@@ -34,27 +45,58 @@ class SongIndexer:
 
         count = 0
         edited = 0
+        edited_version = 0
         added = 0
+        added_version = 0
 
         for i in range(0, len(all_songs), self.batch_size):
             for file in all_songs[i:i + self.batch_size]:
 
                 try:
                     data = parse_text_file(file, song_folder)
+                    txt_path = data.get('TxtPath')
+                    mp3_path = data.get('Mp3Path')
                 except SyntaxError:
                     print(f"Syntax error in file: {file}")
                     continue
 
-                song = Song(title=data.get('Title'),artist=data.get('Artist'),
-                            language=data.get('Language'),year=data.get('Year'),
-                            album=data.get('Album'),genre=data.get('Genre'),edition=data.get('Edition'),
+                version = SongVersion(folder=data.get('Folder'),
+                                      txt_path=data.get('TxtPath'),
+                                      is_rap=data.get('HasRap', False),
+                                      is_duet=data.get('IsDuet', False),
+                                      modify_date=data.get('ModifyDate'),
+                                      errors=data.get('Errors'))
+
+                existing_version = self.session.query(SongVersion).filter_by(txt_path=txt_path).first()
+
+                if existing_version:
+                    edited_version += 1
+
+                    if version.folder is not None:
+                        existing_version.folder = version.folder
+
+                    if version.modify_date is not None:
+                        existing_version.modify_date = version.modify_date
+
+                    if version.errors is not None:
+                        existing_version.errors = version.errors
+
+                    existing_version.is_rap = version.is_rap
+                    existing_version.is_duet = version.is_duet
+                else:
+                    added_version += 1
+                    self.session.add(version)
+
+                song = Song(title=data.get('Title'), artist=data.get('Artist'),
+                            language=data.get('Language'), year=data.get('Year'),
+                            album=data.get('Album'), genre=data.get('Genre'), edition=data.get('Edition'),
                             is_rap=data.get('HasRap', False), is_duet=data.get('IsDuet', False),
-                            mp3_path=data.get('Mp3Path'),modify_date=data.get('ModifyDate'),
-                            cover_path=data.get('Cover'),folder_path=data.get('Folder'),
+                            mp3_path=data.get('Mp3Path'), modify_date=data.get('ModifyDate'),
+                            cover_path=data.get('Cover'), folder=data.get('Folder'),
                             errors=data.get('Errors'))
 
                 # depending on what we find to be the "unique key" - currently it's the mp3 file
-                existing_song = self.session.query(Song).filter_by(mp3_path=data['Mp3Path']).first()
+                existing_song = self.session.query(Song).filter_by(mp3_path=mp3_path).first()
 
                 if existing_song:
                     edited += 1
@@ -88,8 +130,8 @@ class SongIndexer:
                     if song.cover_path is not None:
                         existing_song.cover_path = song.cover_path
 
-                    if song.folder_path is not None:
-                        existing_song.folder_path = song.folder_path
+                    if song.folder is not None:
+                        existing_song.folder = song.folder
 
                     if song.errors is not None:
                         existing_song.errors = song.errors

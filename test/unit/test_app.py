@@ -48,7 +48,7 @@ def test_api_mp3(client):
             year=2022,
             mp3_path='Eminem - Lose yourself/Eminem - Lose yourself.mp3',
             modify_date=123456789,
-            folder_path='Eminem - Lose yourself'
+            folder='Eminem - Lose yourself'
         )
         db.session.add(test_song)
         db.session.commit()
@@ -68,7 +68,7 @@ def test_handle_song_request(client):
             year=2022,
             mp3_path='green_day_basket_case.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(test_song)
 
@@ -93,7 +93,7 @@ def test_handle_song_request_duet_only(client):
             year=2022,
             mp3_path='green_day_basket_case.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(test_song)
 
@@ -105,7 +105,7 @@ def test_handle_song_request_duet_only(client):
             year=2022,
             mp3_path='tenacious_d.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(duet_song)
 
@@ -135,7 +135,7 @@ def test_handle_song_request_search_filter(client, filter, expected):
             year=2022,
             mp3_path='green_day_basket_case.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         second_song = Song(
             title='Tribute',
@@ -144,7 +144,7 @@ def test_handle_song_request_search_filter(client, filter, expected):
             year=2022,
             mp3_path='tenacious_d.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
 
         third_song = Song(
@@ -154,7 +154,7 @@ def test_handle_song_request_search_filter(client, filter, expected):
             year=2022,
             mp3_path='africa.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(test_song)
         db.session.add(second_song)
@@ -185,7 +185,7 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
             year=2022,
             mp3_path='green_day_basket_case.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         second_song = Song(
             title='Tribute',
@@ -194,7 +194,7 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
             year=2022,
             mp3_path='tenacious_d.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
 
         third_song = Song(
@@ -204,7 +204,7 @@ def test_handle_song_request_with_times_play_sorted(client, limit, offset, expec
             year=2022,
             mp3_path='africa.mp3',
             modify_date=123456789,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(test_song)
         db.session.add(second_song)
@@ -251,7 +251,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             year=2002,
             mp3_path='green_day_basket_case.mp3',
             modify_date=11111,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         second_song = Song(
             title='Tribute',
@@ -260,7 +260,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             year=2010,
             mp3_path='tenacious_d.mp3',
             modify_date=33333,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
 
         third_song = Song(
@@ -273,7 +273,7 @@ def test_handle_song_request_sort(client, sort_by, expected):
             year=2015,
             mp3_path='adele.mp3',
             modify_date=22222,
-            folder_path='/test/folder'
+            folder='/test/folder'
         )
         db.session.add(test_song)
         db.session.add(second_song)

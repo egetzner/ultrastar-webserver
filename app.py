@@ -55,7 +55,7 @@ class Song(db.Model):
     year = db.Column(db.Integer)
     mp3_path = db.Column(db.String(255), unique=True)
     modify_date = db.Column(db.Integer)
-    folder_path = db.Column(db.String(255))
+    folder = db.Column(db.String(255))
     errors = db.Column(db.String(255))
 
 

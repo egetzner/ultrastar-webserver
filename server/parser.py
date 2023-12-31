@@ -60,8 +60,8 @@ def parse_text_file(text_file, song_path):
             raise SyntaxError(f"No MP3 found in keys: [{str.join(',', data.keys())}]")
 
     data['Folder'] = os.path.relpath(folder, start=song_path)
-    data['FileName'] = os.path.basename(text_file)
-    data['ModifyDate'] = os.path.getmtime(folder)
+    data['TxtPath'] = os.path.relpath(text_file, start=song_path)
+    data['ModifyDate'] = os.path.getmtime(text_file)
 
     return data
 
