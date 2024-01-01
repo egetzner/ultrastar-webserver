@@ -6,3 +6,4 @@ songs.db
 .env
 .coverage
 coverage*
+/test/data/output.db

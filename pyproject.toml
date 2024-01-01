@@ -15,7 +15,6 @@ pyinstaller = "^5.11.0"
 python-dotenv = "^1.0.0"
 werkzeug= "2.2.2"
 openpyxl = "^3.1.2"
-pandas = "^2.1.4"
 
 [tool.poetry.scripts]
 run-server = "flask:main.debug.run(host='0.0.0.0')"
